@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mooca Hub - Tudo do Bairro na Palma da Mão</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Favicon e ícones para PWA -->
+  <link rel="icon" href="https://favicon.io/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://via.placeholder.com/192x192/FF5722/FFFFFF?text=MH">
+  <link rel="icon" type="image/png" sizes="192x192" href="https://via.placeholder.com/192x192/FF5722/FFFFFF?text=MH">
+  <link rel="icon" type="image/png" sizes="512x512" href="https://via.placeholder.com/512x512/FF5722/FFFFFF?text=MH">
+  <link rel="manifest" href="data:application/manifest+json,{
+    \"name\": \"Mooca Hub\",
+    \"short_name\": \"Mooca Hub\",
+    \"icons\": [
+      {
+        \"src\": \"https://via.placeholder.com/192x192/FF5722/FFFFFF?text=MH\",
+        \"sizes\": \"192x192\",
+        \"type\": \"image/png\"
+      },
+      {
+        \"src\": \"https://via.placeholder.com/512x512/FF5722/FFFFFF?text=MH\",
+        \"sizes\": \"512x512\",
+        \"type\": \"image/png\"
+      }
+    ],
+    \"theme_color\": \"#FF5722\",
+    \"background_color\": \"#121212\",
+    \"display\": \"standalone\"
+  }">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #121212, #1e1e1e);
+      margin: 0;
+      padding: 20px;
+      color: #f0f0f0;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    h1 {
+      color: #FF5722;
+      font-size: 2.5em;
+      text-shadow: 0 0 10px #FF5722, 0 0 20px rgba(255, 87, 34, 0.6);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px; /* Reduzido levemente para caber mais cards */
+      max-width: 1200px;
+      margin: 0 auto 30px auto;
+    }
+    .card {
+      background: #2a2a2a;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.3);
+      padding: 15px; /* Reduzido de 20px para caber mais */
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-height: 120px; /* Reduzido de 140px */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #00ffff, 0 0 50px rgba(0, 255, 255, 0.7);
+    }
+    .card h2 {
+      margin: 8px 0 0;
+      font-size: 1.1em; /* Um pouco menor para caber melhor */
+      color: #00ff00;
+      text-shadow: 0 0 5px #00ff00;
+    }
+    .emoji {
+      font-size: 3em; /* Um pouco menor */
+      margin-bottom: 8px;
+    }
+    #conteudo {
+      margin: 20px auto;
+      padding: 20px;
+      background: #2a2a2a;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00ffff;
+      max-width: 1200px;
+      min-height: 60vh;
+      display: none;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95em;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    .acougue-btn, .emporio-btn, .padaria-btn, .farm-btn, .farm-comum-btn, .hamburguer-btn, .mercado-btn, .restaurante-btn, .noticias-btn, .lazer-btn {
+      background: #00ffff;
+      color: #121212;
+      box-shadow: 0 0 8px #00ffff;
+    }
+    .acougue-btn:hover, .emporio-btn:hover, .padaria-btn:hover,
+    .farm-btn:hover, .farm-comum-btn:hover, .hamburguer-btn:hover,
+    .mercado-btn:hover, .restaurante-btn:hover, .noticias-btn:hover, .lazer-btn:hover {
+      background: #00ff00;
+      box-shadow: 0 0 15px #00ff00;
+      transform: translateY(-2px);
+    }
+    .farm-manip-btn {
+      background: #9b59b6;
+      color: white;
+      box-shadow: 0 0 8px #9b59b6;
+    }
+    .pronto-btn {
+      background: #ff5722;
+      color: white;
+      box-shadow: 0 0 8px #ff5722;
+    }
+    .close-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #00ffff;
+      color: #121212;
+      box-shadow: 0 0 10px #00ffff;
+      font-size: 1em;
+    }
+    .close-btn:hover {
+      background: #00ff00;
+      box-shadow: 0 0 20px #00ff00;
+    }
+    .sugestao-email {
+      color: #81d4fa;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .sugestao-email:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    iframe.map-embed {
+      width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .weather-box {
+      background: rgba(0,0,0,0.4);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      margin: 15px 0;
+    }
+    .temp {
+      font-size: 2.2em;
+      font-weight: bold;
+    }
+    .cold { color: #81d4fa; }
+    .mild { color: #FF9800; }
+    .hot { color: #f44336; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    table th, table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #444;
+    }
+    table th {
+      background: #333;
+      color: #00ff00;
+    }
+    table tr:hover {
+      background: #333;
+    }
+    .overflow-x {
+      overflow-x: auto;
+    }
+    .lista-estabelecimentos {
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    .lista-estabelecimentos::-webkit-scrollbar {
+      width: 8px;
+    }
+    .lista-estabelecimentos::-webkit-scrollbar-thumb {
+      background: #00ffff;
+      border-radius: 4px;
+    }
+    .estabelecimentos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      padding: 10px;
+    }
+    .estabelecimento-card {
+      background: #2a2a2a;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #00ffff;
+      transition: all 0.3s;
+    }
+    .estabelecimento-card:hover {
+      background: #00ffff22;
+      transform: translateY(-4px);
+      box-shadow: 0 0 15px #00ffff;
+    }
+    .section-separator {
+      font-size: 1.2em;
+      color: #00ffff;
+      margin: 30px 0 15px;
+      text-align: center;
+      border-bottom: 1px solid #444;
+      padding-bottom: 10px;
+    }
+    .bolinha {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .bolinha.ativa {
+      background: #00ff00;
+      box-shadow: 0 0 8px #00ff00;
+      animation: piscar 1.5s infinite;
+    }
+    .bolinha.inativa {
+      background: #ff4444;
+    }
+    @keyframes piscar {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+    .apoio-lista {
+      list-style-type: disc;
+      padding-left: 30px;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    .apoio-lista li {
+      margin-bottom: 10px;
+    }
+    .apoio-link {
+      color: #00ffff;
+      text-decoration: none;
+    }
+    .apoio-link:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    #map {
+      height: 400px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .lazer-item {
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      border: 1px solid #00ffff;
+    }
+    .lazer-item h3 {
+      color: #00ff00;
+      margin: 0 0 8px;
+    }
+    .lazer-item p {
+      margin: 5px 0;
+      font-size: 0.95em;
+    }
+    /* Mobile: mantém o comportamento que funcionava (2 colunas) */
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+      }
+      .card {
+        min-height: 110px;
+        padding: 12px;
+      }
+      .emoji {
+        font-size: 2.8em;
+        margin-bottom: 6px;
+      }
+      .card h2 {
+        font-size: 1em;
+      }
+      header {
+        margin-bottom: 20px;
+      }
+      h1 {
+        font-size: 2em;
+      }
+      p {
+        font-size: 0.9em;
+      }
+      #conteudo {
+        padding: 12px;
+      }
+      button {
+        padding: 8px;
+        font-size: 0.9em;
+      }
+    }
+
+    /* Telas muito pequenas (< 400px) - 1 coluna */
+    @media (max-width: 400px) {
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .card {
+        min-height: 120px;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Mooca Hub - Tudo do Bairro na Palma da Mão</h1>
+    <p>Informações rápidas e úteis do bairro da Mooca - SP</p>
+  </header>
+
+  <div class="grid">
+    <div class="card" data-modulo="seguranca"><div class="emoji">🚨</div><h2>Segurança</h2></div>
+    <div class="card" data-modulo="prontoatendimento"><div class="emoji">🏥</div><h2>Pronto Atendimento</h2></div>
+    <div class="card" data-modulo="tempo"><div class="emoji">☀️</div><h2>Previsão do Tempo</h2></div>
+    <div class="card" data-modulo="transito"><div class="emoji">🚗</div><h2>Trânsito na Mooca</h2></div>
+    <div class="card" data-modulo="radares"><div class="emoji">🚦</div><h2>Radares na Mooca</h2></div>
+    <div class="card" data-modulo="noticias"><div class="emoji">📰</div><h2>Notícias & Eventos</h2></div>
+    <div class="card" onclick="redirectToPizzarias()"><div class="emoji">🏪</div><h2>Estabelecimentos<br>Comerciais</h2></div>
+    <div class="card" data-modulo="wifi"><div class="emoji">📡</div><h2>Wi-Fi Disponíveis</h2></div>
+    <div class="card" data-modulo="lazer"><div class="emoji">🌳</div><h2>Lazer</h2></div>
+    <div class="card" data-modulo="patrocinadores"><div class="emoji">🤝</div><h2>Nossos Apoiadores</h2></div>
+    <div class="card" data-modulo="pedidos-sugestoes"><div class="emoji">📩</div><h2>Pedidos /<br>Sugestões</h2></div>
+  </div>
+
+  <div id="conteudo" style="display: none;">
+    <!-- Div vazio por padrão -->
+  </div>
+
+  <script>
+    function fecharModulo() {
+      const conteudo = document.getElementById('conteudo');
+      conteudo.innerHTML = '';
+      conteudo.style.display = 'none';
+    }
+
+    function getDiaSemana() {
+      const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      const hoje = new Date().getDay();
+      return dias[hoje];
+    }
+
+    function redirectToPizzarias() {
+      window.open('https://pizzaria-finder-copy-e01ee74b.base44.app/', '_blank');
+    }
+
+    function fetchWeather() {
+      const apiKey = '0a8a8b06e367a630a3079ba38c71b310';
+      const lat = -23.558;
+      const lon = -46.595;
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt_br`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.main) {
+            const temp = data.main.temp.toFixed(1);
+            const desc = data.weather[0].description;
+            const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+            let tempClass = 'mild';
+            if (parseFloat(temp) < 20) tempClass = 'cold';
+            if (parseFloat(temp) > 28) tempClass = 'hot';
+
+            const weatherEl = document.getElementById('weather-info');
+            if (weatherEl) {
+              weatherEl.innerHTML = `
+                <img src="${icon}" alt="${desc}" style="vertical-align:middle; width:60px;">
+                <span class="temp ${tempClass}">${temp}°C</span>
+                <span class="desc"> - ${desc.charAt(0).toUpperCase() + desc.slice(1)}</span>
+                <br>
+                <small>Umidade: ${data.main.humidity}% | Vento: ${data.wind.speed} m/s</small>
+              `;
+            }
+          } else {
+            const weatherEl = document.getElementById('weather-info');
+            if (weatherEl) weatherEl.innerHTML = 'Dados não disponíveis.';
+          }
+        })
+        .catch(() => {
+          const weatherEl = document.getElementById('weather-info');
+          if (weatherEl) weatherEl.innerHTML = 'Erro ao carregar. Verifique conexão ou chave API.';
+        });
+    }
+
+    // Carregamento dinâmico dos módulos
+    document.querySelectorAll('.card').forEach(card => {
+      if (card.hasAttribute('data-modulo')) {
+        card.addEventListener('click', async () => {
+          const modulo = card.getAttribute('data-modulo');
+          const conteudo = document.getElementById('conteudo');
+          conteudo.innerHTML = '<p style="text-align:center; color:#00ffff; font-size:1.2em;">Carregando...</p>';
+          conteudo.style.display = 'block';
+
+          try {
+            const url = `${modulo}.html`;
+            console.log('Tentando carregar:', url);
+
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error(`Erro ${response.status} - ${response.statusText}`);
+            }
+
+            const html = await response.text();
+            conteudo.innerHTML = html;
+
+            if (modulo === 'tempo') fetchWeather();
+
+            conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } catch (err) {
+            conteudo.innerHTML = `
+              <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
+                Erro ao carregar o módulo "${modulo}"<br>
+                Caminho tentado: ${modulo}.html<br>
+                Detalhe: ${err.message}<br><br>
+                <strong>Dica:</strong> Verifique se o arquivo existe na raiz do projeto.
+              </p>
+            `;
+            console.error('Erro completo:', err);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
