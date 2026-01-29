@@ -204,38 +204,37 @@
       border-bottom: 1px solid #444;
       padding-bottom: 10px;
     }
-    /* CSS DAS BOLINHAS - REFORÇADO EXTREMO PARA APARECER NO DESKTOP */
+    /* CSS DAS BOLINHAS - REFORÇADO */
     .bolinha {
       display: inline-block !important;
-      width: 18px !important;
-      height: 18px !important;
+      width: 16px !important;
+      height: 16px !important;
       border-radius: 50% !important;
-      margin-right: 15px !important;
+      margin-right: 12px !important;
       vertical-align: middle !important;
       background: transparent !important;
-      border: 2px solid #ffffff !important; /* borda branca para contorno sempre visível */
+      border: 2px solid #ffffff !important;
     }
     .bolinha.ativa {
-      background-color: #00ff00 !important;
-      box-shadow: 0 0 15px #00ff00, inset 0 0 5px #00ff00 !important;
+      background: #00ff00 !important;
+      box-shadow: 0 0 12px #00ff00 !important;
       animation: piscar 1.5s infinite !important;
     }
     .bolinha.inativa {
-      background-color: #ff4444 !important;
-      box-shadow: 0 0 10px #ff4444 !important;
+      background: #ff4444 !important;
+      box-shadow: 0 0 8px #ff4444 !important;
     }
     @keyframes piscar {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(1.1); }
-      100% { opacity: 1; transform: scale(1); }
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
     }
-    /* Reforço ainda maior no desktop */
     @media (min-width: 768px) {
       .bolinha {
-        width: 22px !important;
-        height: 22px !important;
-        margin-right: 18px !important;
-        border: 3px solid #ffffff !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin-right: 15px !important;
+        border: 2px solid #ffffff !important;
       }
     }
     .apoio-lista {
@@ -359,34 +358,49 @@
         });
     }
 
-    // Função global para inicializar mapas
+    // Função global para inicializar mapas (com delay maior e log)
     function initMap() {
-      const mapElement = document.getElementById('map');
-      if (!mapElement || mapElement._leaflet_id) return;
+      setTimeout(() => {
+        const mapElement = document.getElementById('map');
+        if (!mapElement || mapElement._leaflet_id) {
+          console.log('Mapa já inicializado ou div não encontrado');
+          return;
+        }
 
-      const map = L.map('map').setView([-23.558, -46.595], 14);
+        const map = L.map('map').setView([-23.558, -46.595], 14);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
 
-      if (mapElement.classList.contains('wifi-pin')) {
-        L.marker([-23.562, -46.592]).addTo(map).bindPopup('Praça Ciro Pontes - Mooca<br>WiFi Livre SP');
-        L.marker([-23.548, -46.588]).addTo(map).bindPopup('Praça General Humberto de Sousa Mello - Belém<br>WiFi Livre SP');
-        L.marker([-23.545, -46.608]).addTo(map).bindPopup('Largo da Concórdia - Brás<br>WiFi Livre SP');
-        L.marker([-23.560, -46.579]).addTo(map).bindPopup('Praça São Luis do Curu - Água Rasa<br>WiFi Livre SP');
-        L.marker([-23.539, -46.610]).addTo(map).bindPopup('Praça Kantuta - Pari<br>WiFi Livre SP');
-        L.marker([-23.540, -46.583]).addTo(map).bindPopup('Praça Silvio Romero - Tatuapé<br>WiFi Livre SP');
-      }
+        let pinCount = 0;
 
-      if (mapElement.classList.contains('lazer-pin')) {
-        L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho');
-        L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)');
-        L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping');
-        L.marker([-23.5735, -46.5888]).addTo(map).bindPopup('Clube Atlético Juventus');
-      }
+        if (mapElement.classList.contains('wifi-pin')) {
+          L.marker([-23.562, -46.592]).addTo(map).bindPopup('Praça Ciro Pontes - Mooca<br>WiFi Livre SP');
+          pinCount++;
+          L.marker([-23.548, -46.588]).addTo(map).bindPopup('Praça General Humberto de Sousa Mello - Belém<br>WiFi Livre SP');
+          pinCount++;
+          L.marker([-23.545, -46.608]).addTo(map).bindPopup('Largo da Concórdia - Brás<br>WiFi Livre SP');
+          pinCount++;
+          L.marker([-23.560, -46.579]).addTo(map).bindPopup('Praça São Luis do Curu - Água Rasa<br>WiFi Livre SP');
+          pinCount++;
+          L.marker([-23.539, -46.610]).addTo(map).bindPopup('Praça Kantuta - Pari<br>WiFi Livre SP');
+          pinCount++;
+          L.marker([-23.540, -46.583]).addTo(map).bindPopup('Praça Silvio Romero - Tatuapé<br>WiFi Livre SP');
+          pinCount++;
+          console.log('Pins de Wi-Fi adicionados:', pinCount);
+        }
 
-      console.log('Mapa inicializado com sucesso');
+        if (mapElement.classList.contains('lazer-pin')) {
+          L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho');
+          L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)');
+          L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping');
+          L.marker([-23.5735, -46.5888]).addTo(map).bindPopup('Clube Atlético Juventus');
+          console.log('Pins de Lazer adicionados');
+        }
+
+        console.log('Mapa inicializado com sucesso');
+      }, 500); // Delay para garantir que o div #map existe
     }
 
     // Listener principal para cards com data-modulo
@@ -458,4 +472,3 @@
   </script>
 </body>
 </html>
-
