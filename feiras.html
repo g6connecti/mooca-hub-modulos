@@ -1,5 +1,9 @@
 <h2>Feiras Livres na Mooca</h2>
 
+<p style="text-align:center; margin-bottom:20px; font-size:1.1em; color:#00ffff;">
+  Confira as feiras livres do bairro. A bolinha verde piscante indica as feiras de hoje!
+</p>
+
 <div class="overflow-x">
   <table>
     <thead>
@@ -10,20 +14,103 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>Terça-feira</td><td>Feira Moraes Barros</td><td>Rua Firmiano Pinto</td></tr>
-      <tr><td>Terça-feira</td><td>Feira Parque da Mooca</td><td>Rua Conde de Prates</td></tr>
-      <tr><td>Quarta-feira</td><td>Feira Madre de Deus</td><td>Rua Madre de Deus, 604</td></tr>
-      <tr><td>Quarta-feira</td><td>Feira Mooca Moderna</td><td>Rua dos Trilhos, 869</td></tr>
-      <tr><td>Quinta-feira</td><td>Feira Alto da Mooca</td><td>Rua Itanhaém</td></tr>
-      <tr><td>Sexta-feira</td><td>Feira Jaibarás</td><td>Rua Jaibarás</td></tr>
-      <tr><td>Sábado</td><td>Feira Mooca (Tabajaras)</td><td>Rua Tabajaras, entre 227 e 366</td></tr>
-      <tr><td>Domingo</td><td>Feira Mooca Moderna (Bresser)</td><td>Rua Bresser, 2701</td></tr>
+      <tr>
+        <td>Terça-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Moraes Barros</td>
+        <td>Rua Firmiano Pinto</td>
+      </tr>
+      <tr>
+        <td>Terça-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Parque da Mooca</td>
+        <td>Rua Conde de Prates</td>
+      </tr>
+      <tr>
+        <td>Terça-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Décio Abrahão</td>
+        <td>Rua Décio Ábramo, nº 412</td>
+      </tr>
+      <tr>
+        <td>Terça-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Pires de Campos</td>
+        <td>Rua Pires de Campos</td>
+      </tr>
+      <tr>
+        <td>Terça-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Dom Bosco</td>
+        <td>Rua Dom Bosco</td>
+      </tr>
+
+      <tr>
+        <td>Quarta-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Madre de Deus</td>
+        <td>Rua Madre de Deus, nº 604</td>
+      </tr>
+      <tr>
+        <td>Quarta-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Mooca Moderna</td>
+        <td>Rua dos Trilhos, nº 869</td>
+      </tr>
+
+      <tr>
+        <td>Quinta-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Alto da Mooca</td>
+        <td>Rua Itanhaém</td>
+      </tr>
+      <tr>
+        <td>Quinta-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Vila Oratório</td>
+        <td>Rua Silva Coutinho, S/N</td>
+      </tr>
+      <tr>
+        <td>Quinta-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Mãe do Céu</td>
+        <td>Rua Visconde de Itaboraí, nº 233</td>
+      </tr>
+      <tr>
+        <td>Quinta-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Machado Tolosa</td>
+        <td>Rua Machado Tolosa</td>
+      </tr>
+
+      <tr>
+        <td>Sexta-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Jaibarás</td>
+        <td>Rua Jaibarás</td>
+      </tr>
+      <tr>
+        <td>Sexta-feira <span class="bolinha ativa"></span></td>
+        <td>Feira Bom Jesus</td>
+        <td>Rua Bom Jesus</td>
+      </tr>
+
+      <tr>
+        <td>Sábado <span class="bolinha ativa"></span></td>
+        <td>Feira Mooca (Tabajaras)</td>
+        <td>Rua Tabajaras, entre 227 e 366</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-<p style="margin-top:15px; font-size:0.9em; text-align:center; color:#00ffff;">
-  Horários geralmente das 7h às 13h — confirme no local ou com a prefeitura.
+<p style="margin-top:25px; font-size:0.9em; text-align:center; color:#ff9800;">
+  Horários geralmente das 7h às 13h — confirme no local ou com a prefeitura.<br>
+  <strong>Hoje é <span id="dia-atual"></span>!</strong>
 </p>
 
 <button class="close-btn" onclick="fecharModulo()">Fechar</button>
+
+<script>
+  // Mostra o dia da semana atual no texto
+  function getDiaSemana() {
+    const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const hoje = new Date().getDay();
+    return dias[hoje];
+  }
+
+  document.getElementById('dia-atual').textContent = getDiaSemana();
+
+  // Marca as bolinhas como ativas apenas para o dia atual (já feito no HTML)
+  // A classe .ativa já está no HTML para os dias corretos; o CSS cuida da cor e piscar
+</script>
+
+
