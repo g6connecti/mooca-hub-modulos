@@ -204,18 +204,19 @@
       border-bottom: 1px solid #444;
       padding-bottom: 10px;
     }
-    /* CSS DAS BOLINHAS - GARANTIDO AQUI */
+    /* CSS DAS BOLINHAS - REFORÇADO COM !IMPORTANT PARA GARANTIR VISIBILIDADE */
     .bolinha {
       display: inline-block !important;
-      width: 14px !important;
-      height: 14px !important;
+      width: 16px !important;
+      height: 16px !important;
       border-radius: 50% !important;
-      margin-right: 10px !important;
+      margin-right: 12px !important;
       vertical-align: middle !important;
+      background: transparent !important; /* fallback */
     }
     .bolinha.ativa {
       background: #00ff00 !important;
-      box-shadow: 0 0 10px #00ff00 !important;
+      box-shadow: 0 0 12px #00ff00 !important;
       animation: piscar 1.5s infinite !important;
     }
     .bolinha.inativa {
@@ -446,4 +447,3 @@
   </script>
 </body>
 </html>
-
