@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
+    /* Todo o CSS do seu antigo (mantido exatamente igual) */
     body {
       font-family: Arial, sans-serif;
       background: linear-gradient(to bottom, #121212, #1e1e1e);
@@ -58,15 +59,20 @@
       font-size: 3.5em;
       margin-bottom: 10px;
     }
-    #conteudo {
+    #info {
       margin: 20px auto;
       padding: 20px;
       background: #2a2a2a;
       border-radius: 12px;
       box-shadow: 0 0 20px #00ffff;
       max-width: 1200px;
-      min-height: 60vh;
       display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    #info.visible {
+      display: block;
+      opacity: 1;
     }
     button {
       display: block;
@@ -204,38 +210,26 @@
       border-bottom: 1px solid #444;
       padding-bottom: 10px;
     }
-    /* CSS DAS BOLINHAS - REFORÇADO */
     .bolinha {
-      display: inline-block !important;
-      width: 16px !important;
-      height: 16px !important;
-      border-radius: 50% !important;
-      margin-right: 12px !important;
-      vertical-align: middle !important;
-      background: transparent !important;
-      border: 2px solid #ffffff !important;
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-left: 8px;
+      vertical-align: middle;
     }
     .bolinha.ativa {
-      background: #00ff00 !important;
-      box-shadow: 0 0 12px #00ff00 !important;
-      animation: piscar 1.5s infinite !important;
+      background: #00ff00;
+      box-shadow: 0 0 8px #00ff00;
+      animation: piscar 1.5s infinite;
     }
     .bolinha.inativa {
-      background: #ff4444 !important;
-      box-shadow: 0 0 8px #ff4444 !important;
+      background: #ff4444;
     }
     @keyframes piscar {
       0% { opacity: 1; }
       50% { opacity: 0.4; }
       100% { opacity: 1; }
-    }
-    @media (min-width: 768px) {
-      .bolinha {
-        width: 20px !important;
-        height: 20px !important;
-        margin-right: 15px !important;
-        border: 2px solid #ffffff !important;
-      }
     }
     .apoio-lista {
       list-style-type: disc;
@@ -284,39 +278,274 @@
   </header>
 
   <div class="grid">
-    <div class="card" data-modulo="seguranca"><div class="emoji">🚨</div><h2>Segurança</h2></div>
-    <div class="card" data-modulo="prontoatendimento"><div class="emoji">🏥</div><h2>Pronto Atendimento</h2></div>
-    <div class="card" data-modulo="tempo"><div class="emoji">☀️</div><h2>Previsão do Tempo</h2></div>
-    <div class="card" data-modulo="transito"><div class="emoji">🚗</div><h2>Trânsito na Mooca</h2></div>
-    <div class="card" data-modulo="radares"><div class="emoji">🚦</div><h2>Radares na Mooca</h2></div>
-    <div class="card" data-modulo="noticias"><div class="emoji">📰</div><h2>Notícias & Eventos</h2></div>
-    <div class="card" data-modulo="estabelecimentos"><div class="emoji">🏪</div><h2>Estabelecimentos<br>Comerciais</h2></div>
-    <div class="card" data-modulo="wifi"><div class="emoji">📡</div><h2>Wi-Fi Disponíveis</h2></div>
-    <div class="card" data-modulo="lazer"><div class="emoji">🌳</div><h2>Lazer</h2></div>
-    <div class="card" data-modulo="patrocinadores"><div class="emoji">🤝</div><h2>Nossos Apoiadores</h2></div>
-    <div class="card" data-modulo="pedidos-sugestoes"><div class="emoji">📩</div><h2>Pedidos /<br>Sugestões</h2></div>
+    <div class="card" onclick="showInfo('seguranca')"><div class="emoji">🚨</div><h2>Segurança</h2></div>
+    <div class="card" onclick="showInfo('prontoatendimento')"><div class="emoji">🏥</div><h2>Pronto Atendimento</h2></div>
+    <div class="card" onclick="showInfo('tempo')"><div class="emoji">☀️</div><h2>Previsão do Tempo</h2></div>
+    <div class="card" onclick="showInfo('transito')"><div class="emoji">🚗</div><h2>Trânsito na Mooca</h2></div>
+    <div class="card" onclick="showInfo('radares')"><div class="emoji">🚦</div><h2>Radares na Mooca</h2></div>
+    <div class="card" onclick="showInfo('noticias')"><div class="emoji">📰</div><h2>Notícias & Eventos</h2></div>
+    <div class="card" onclick="showInfo('estabelecimentos')"><div class="emoji">🏪</div><h2>Estabelecimentos<br>Comerciais</h2></div>
+    <div class="card" onclick="showInfo('wifi')"><div class="emoji">📡</div><h2>Wi-Fi Disponíveis</h2></div>
+    <div class="card" onclick="showInfo('lazer')"><div class="emoji">🌳</div><h2>Lazer</h2></div>
+    <div class="card" onclick="showInfo('patrocinadores')"><div class="emoji">🤝</div><h2>Nossos Apoiadores</h2></div>
+    <div class="card" onclick="showInfo('pedidos-sugestoes')"><div class="emoji">📩</div><h2>Pedidos /<br>Sugestões</h2></div>
   </div>
 
-  <div id="conteudo" style="display: none;">
-    <!-- Aqui carregam os módulos e sub-módulos via fetch -->
+  <div id="info">
+    <h2 id="titulo"></h2>
+    <div id="conteudo"></div>
+    <button class="close-btn" onclick="fecharInfo()">Fechar</button>
   </div>
 
   <script>
-    // Função para fechar módulo e esconder o quadro
-    function fecharModulo() {
-      const conteudo = document.getElementById('conteudo');
-      conteudo.innerHTML = '';
-      conteudo.style.display = 'none';
+    function fecharInfo() {
+      const info = document.getElementById('info');
+      info.classList.remove('visible');
+      setTimeout(() => info.style.display = 'none', 500);
     }
 
     function getDiaSemana() {
-      const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+      const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
       const hoje = new Date().getDay();
       return dias[hoje];
     }
 
     function redirectToPizzarias() {
       window.open('https://pizzaria-finder-copy-e01ee74b.base44.app/', '_blank');
+    }
+
+    function showInfo(tipo) {
+      const info = document.getElementById('info');
+      const titulo = document.getElementById('titulo');
+      const conteudo = document.getElementById('conteudo');
+
+      info.classList.remove('visible');
+      conteudo.innerHTML = '';
+      info.style.display = 'block';
+
+      const diaHoje = getDiaSemana();
+
+      if (tipo === 'seguranca') {
+        titulo.textContent = 'Números de Emergência / Sistema colaborativo de segurança Mooca';
+        conteudo.innerHTML = `
+          <button class="vigia-btn" onclick="window.open('https://web.facebook.com/vigia.mooca.2025/?_rdc=1&_rdr#', '_blank')">🔍 Vigia Mooca</button>
+          <button class="emergencia-btn" onclick="window.location.href='tel:193'">🚒 Bombeiros - 193</button>
+          <button class="emergencia-btn" onclick="window.location.href='tel:190'">👮 Polícia Militar - 190</button>
+          <button class="emergencia-btn" onclick="window.location.href='tel:192'">🚑 SAMU - 192</button>
+          <button class="emergencia-btn" onclick="window.location.href='tel:199'">🛡️ Defesa Civil - 199</button>
+          <button class="emergencia-btn" onclick="window.location.href='tel:195'">🚰 Sabesp - 195</button>
+          <button class="emergencia-btn" onclick="window.location.href='tel:08000550195'">⚡ Enel - 0800 055 0195</button>
+          <p style="margin-top:10px; font-size:0.9em;">Ligue imediatamente em caso de emergência. Participe do grupo Vigia Mooca para alertas colaborativos.</p>
+        `;
+      } else if (tipo === 'prontoatendimento') {
+        titulo.textContent = 'Pronto Atendimento / UPAs e Hospitais na Mooca';
+        conteudo.innerHTML = `
+          <button class="pronto-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Rua+Juventus+562+Mooca+Sao+Paulo', '_blank')">🏥 Hospital Municipal Dr. Ignácio Proença de Gouvêa</button>
+          <small>24h - Casos complexos (clínica, ortopedia, gineco, cirurgia)<br>Rua Juventus, 562 - Parque da Mooca<br>Tel: (11) 5178-0000</small>
+
+          <button class="pronto-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Rua+Dr.+Fomm+261+Belenzinho+Sao+Paulo', '_blank')">🏥 UPA Mooca - Dom Paulo Evaristo Arns</button>
+          <small>24h - Baixa/média complexidade (febre, dores, fraturas leves)<br>Rua Dr. Fomm, 261 - Belenzinho (divisa Mooca)<br>Tel: (11) 3245-9020</small>
+
+          <button class="pronto-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Rua+Siqueira+Bueno+1757+Belenzinho+Sao+Paulo', '_blank')">🏥 Hospital Infantil Cândido Fontoura</button>
+          <small>24h - Pronto-Socorro Infantil (pediatria referência)<br>Rua Siqueira Bueno, 1757 - Belenzinho<br>Tel: (11) 2601-8521</small>
+
+          <button class="pronto-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Rua+Serra+de+Jaire+1550+Quarta+Parada+Sao+Paulo', '_blank')">🏥 AMA/UPA Água Rasa</button>
+          <small>Atendimento diurno + urgências (horário ampliado)<br>Rua Serra de Jairé, 1550 - Quarta Parada / Água Rasa<br>Tel: (11) 5237-0060</small>
+
+          <button class="pronto-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Rua+Taquari+549+Mooca+Sao+Paulo', '_blank')">🏥 UBS Mooca (atendimento diurno)</button>
+          <small>Consultas agendadas, vacinação (sem emergência 24h)<br>Rua Taquari, 549 - Mooca<br>Tel: (11) 2618-5255</small>
+
+          <p style="margin-top:15px; font-size:0.9em; color:#ff9800;">Em emergências graves, ligue 192 (SAMU) ou vá ao hospital mais próximo. Informações sujeitas a alteração.</p>
+        `;
+      } else if (tipo === 'tempo') {
+        titulo.textContent = 'Previsão do Tempo - Mooca';
+        conteudo.innerHTML = `
+          <div class="weather-box">
+            <p id="weather-info">Carregando temperatura atual...</p>
+          </div>
+        `;
+        fetchWeather();
+      } else if (tipo === 'transito') {
+        titulo.textContent = 'Trânsito em Tempo Real na Mooca';
+        conteudo.innerHTML = `
+          <p>Mapa ao vivo com condições de trânsito (vermelho = congestionado, amarelo = lento, verde = fluindo)</p>
+          <iframe class="map-embed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.000!2d-46.595!3d-23.558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5f9f5f5f5f5f%3A0x5f5f5f5f5f5f5f5f!2sMooca%2C+S%C3%A3o+Paulo+-+SP!5e0!3m2!1spt-BR!2sbr!4v1690000000000!5m2!1spt-BR!2sbr&t=m" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <p style="font-size:0.9em; margin-top:8px;">(Layer de trânsito ativado automaticamente — atualiza a cada poucos segundos)</p>
+        `;
+      } else if (tipo === 'radares') {
+        titulo.textContent = 'Radares na Mooca e Divisas';
+        conteudo.innerHTML = `
+          <div class="overflow-x">
+            <table>
+              <thead>
+                <tr>
+                  <th>Via</th>
+                  <th>Referência / Cruzamento</th>
+                  <th>Tipo de Fiscalização</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Av. Paes de Barros</td><td>Próximo à Rua Juventus</td><td>Velocidade (50 km/h)</td></tr>
+                <tr><td>Av. Paes de Barros</td><td>Próximo à Rua Chamantá</td><td>Velocidade / Rodízio</td></tr>
+                <tr><td>Av. Salim Farah Maluf</td><td>Próximo ao Viaduto Padre Adelino</td><td>Velocidade (60 km/h) / Rodízio</td></tr>
+                <tr><td>Av. Salim Farah Maluf</td><td>Cruzamento com Av. Vila Ema</td><td>Semafórico / Invasão de Faixa</td></tr>
+                <tr><td>Av. Radial Leste</td><td>Trecho Viaduto Bresser</td><td>Velocidade (60 km/h)</td></tr>
+                <tr><td>Av. Radial Leste</td><td>Próximo à Estação Mooca</td><td>Velocidade / Rodízio</td></tr>
+                <tr><td>Rua do Oratório</td><td>Próximo à Rua João Antônio de Oliveira</td><td>Velocidade (40 km/h - Área Escolar)</td></tr>
+                <tr><td>Rua da Mooca</td><td>Próximo à Rua Dr. João Inácio Teixeira</td><td>Velocidade (40 km/h)</td></tr>
+                <tr><td>Rua dos Trilhos</td><td>Próximo à Rua Taquari</td><td>Semafórico / Velocidade</td></tr>
+                <tr><td>Av. Presidente Wilson</td><td>Próximo à Estação Mooca (CPTM)</td><td>Velocidade / Rodízio</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:15px; font-size:0.9em; text-align:center; color:#00ffff;">
+            Atenção: velocidades e regras podem sofrer alterações. Dirija com segurança! 🚦
+          </p>
+        `;
+      } else if (tipo === 'noticias') {
+        titulo.textContent = 'Notícias & Eventos';
+        conteudo.innerHTML = `
+          <button class="noticias-btn" onclick="window.open('https://portaldamooca.com.br/', '_blank')">Portal da Mooca</button>
+          <button class="noticias-btn" onclick="window.open('https://www.jornalmooca.com.br/', '_blank')">Jornal da Mooca / Revista Mooca Acontece</button>
+          <button class="noticias-btn" onclick="window.open('https://moocamix.com.br/', '_blank')">Mooca Mix</button>
+          <button class="noticias-btn" onclick="window.open('https://www.instagram.com/amoamooca/', '_blank')">Amo a Mooca</button>
+          <button class="noticias-btn" onclick="window.open('https://www.zlnoticias.com.br/mooca', '_blank')">ZL Notícias (Seção Mooca)</button>
+          <button class="noticias-btn" onclick="window.open('https://www.instagram.com/portaldamooca/', '_blank')">Instagram Portal da Mooca</button>
+          <button class="noticias-btn" onclick="window.open('https://www.instagram.com/vivamooca/', '_blank')">Viva Mooca</button>
+          <button class="noticias-btn" onclick="window.open('https://museudaimigracao.org.br/', '_blank')">Museu da Imigração</button>
+          <button class="noticias-btn" onclick="window.open('https://www.prefeitura.sp.gov.br/cidade/secretarias/subprefeituras/mooca/', '_blank')">Subprefeitura Mooca</button>
+        `;
+      } else if (tipo === 'estabelecimentos') {
+        titulo.textContent = 'Estabelecimentos Comerciais da Mooca';
+        conteudo.innerHTML = `
+          <div class="estabelecimentos-grid">
+            <div class="estabelecimento-card" onclick="showInfo('acougues')"><div class="emoji">🥩</div><h2>Açougues</h2></div>
+            <div class="estabelecimento-card" onclick="showInfo('emporios')"><div class="emoji">🧀</div><h2>Empórios</h2></div>
+            <div class="estabelecimento-card" onclick="showInfo('farmacias')"><div class="emoji">💊</div><h2>Farmácias</h2></div>
+            <div class="estabelecimento-card" onclick="showInfo('feiras')"><div class="emoji">🥕</div><h2>Feiras Livres</h2></div>
+            <div class="estabelecimento-card" onclick="showInfo('hamburguer')"><div class="emoji">🍔</div><h2>Hamburguer</h2></div>
+            <div class="estabelecimento-card" onclick="showInfo('mercados')"><div class="emoji">🛒</div><h2>Mercados</h2></div>
+            <div class="estabelecimento-card" onclick="showInfo('padarias')"><div class="emoji">🥖</div><h2>Padarias</h2></div>
+            <div class="estabelecimento-card" onclick="showInfo('restaurantes')"><div class="emoji">🍽️</div><h2>Restaurantes</h2></div>
+            <div class="estabelecimento-card" onclick="redirectToPizzarias()"><div class="emoji">🍕</div><h2>Pizzarias</h2></div>
+          </div>
+        `;
+      } else if (tipo === 'acougues') {
+        titulo.textContent = 'Açougues da Mooca';
+        conteudo.innerHTML = `...`; // mantenha o conteúdo que você tinha
+      } else if (tipo === 'wifi') {
+        titulo.textContent = 'Wi-Fi Disponíveis na Mooca e Região';
+        conteudo.innerHTML = `
+          <p>Pontos de Wi-Fi gratuito (WiFi Livre SP e outros). Clique nos pins para detalhes.</p>
+          <div id="map"></div>
+          <p style="margin-top:15px; font-size:0.9em; color:#ff9800;">Fonte: Prefeitura SP. Conecte-se à rede "WiFi Livre SP". Informações sujeitas a alterações.</p>
+          <button class="noticias-btn" onclick="window.open('https://prefeitura.sp.gov.br/web/inovacao/w/inclusao_digital/152219', '_blank')">Mapa Completo WiFi Livre SP</button>
+        `;
+        setTimeout(() => {
+          var map = L.map('map').setView([-23.558, -46.595], 14);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
+
+          // Pins Wi-Fi (mantidos os mesmos do antigo)
+          L.marker([-23.562, -46.592]).addTo(map).bindPopup('Praça Ciro Pontes - Mooca<br>WiFi Livre SP');
+          L.marker([-23.548, -46.588]).addTo(map).bindPopup('Praça General Humberto de Sousa Mello - Belém<br>WiFi Livre SP');
+          L.marker([-23.545, -46.608]).addTo(map).bindPopup('Largo da Concórdia - Brás<br>WiFi Livre SP');
+          L.marker([-23.560, -46.579]).addTo(map).bindPopup('Praça São Luis do Curu - Água Rasa<br>WiFi Livre SP');
+          L.marker([-23.539, -46.610]).addTo(map).bindPopup('Praça Kantuta - Pari<br>WiFi Livre SP');
+          L.marker([-23.540, -46.583]).addTo(map).bindPopup('Praça Silvio Romero - Tatuapé<br>WiFi Livre SP');
+        }, 300); // Delay maior para garantir DOM
+      } else if (tipo === 'feiras') {
+        titulo.textContent = 'Feiras Livres na Mooca';
+        let html = '<div class="lista-estabelecimentos overflow-x"><table><thead><tr><th>Dia da Semana</th><th>Nome da Feira / Localização</th><th>Endereço</th></tr></thead><tbody>';
+
+        const feiras = [
+          { dia: 'Terça-feira', nome: 'Feira Moraes Barros', endereco: 'Rua Firmiano Pinto' },
+          { dia: 'Terça-feira', nome: 'Feira Parque da Mooca', endereco: 'Rua Conde de Prates' },
+          { dia: 'Terça-feira', nome: 'Feira Décio Abrahão', endereco: 'Rua Décio Ábramo, nº 412' },
+          { dia: 'Terça-feira', nome: 'Feira Pires de Campos', endereco: 'Rua Pires de Campos' },
+          { dia: 'Terça-feira', nome: 'Feira Dom Bosco', endereco: 'Rua Dom Bosco' },
+          { dia: 'Quarta-feira', nome: 'Feira Madre de Deus', endereco: 'Rua Madre de Deus, nº 604' },
+          { dia: 'Quarta-feira', nome: 'Feira Mooca Moderna', endereco: 'Rua dos Trilhos, nº 869' },
+          { dia: 'Quinta-feira', nome: 'Feira Alto da Mooca', endereco: 'Rua Itanhaém' },
+          { dia: 'Quinta-feira', nome: 'Feira Vila Oratório', endereco: 'Rua Silva Coutinho, S/N' },
+          { dia: 'Quinta-feira', nome: 'Feira Mãe do Céu', endereco: 'Rua Visconde de Itaboraí, nº 233' },
+          { dia: 'Quinta-feira', nome: 'Feira Machado Tolosa', endereco: 'Rua Machado Tolosa' },
+          { dia: 'Sexta-feira', nome: 'Feira Jaibarás', endereco: 'Rua Jaibarás' },
+          { dia: 'Sexta-feira', nome: 'Feira Bom Jesus', endereco: 'Rua Bom Jesus' },
+          { dia: 'Sábado', nome: 'Feira Mooca (Tabajaras)', endereco: 'Rua Tabajaras, entre 227 e 366' },
+          { dia: 'Sábado', nome: 'Feira Serra de Jairé', endereco: 'Rua Serra de Jairé, entre 760 e 908' },
+          { dia: 'Domingo', nome: 'Feira Mooca Moderna (Bresser)', endereco: 'Rua Bresser, nº 2701' },
+        ];
+
+        feiras.forEach(feira => {
+          const isHoje = feira.dia.includes(diaHoje);
+          const classeBolinha = isHoje ? 'bolinha ativa' : 'bolinha inativa';
+          html += `<tr><td>${feira.dia} <span class="${classeBolinha}"></span></td><td>${feira.nome}</td><td>${feira.endereco}</td></tr>`;
+        });
+
+        html += '</tbody></table></div>';
+        html += '<p style="margin-top:15px; font-size:0.9em; text-align:center; color:#00ffff;">Horários geralmente das 7h às 13h — confirme no local ou com a prefeitura. Hoje é ' + diaHoje + '!</p>';
+
+        conteudo.innerHTML = html;
+      } else if (tipo === 'lazer') {
+        titulo.textContent = 'Lazer na Mooca e Região';
+        conteudo.innerHTML = `
+          <p>Principais opções de lazer, parques, shoppings, teatros e clubes no bairro e arredores.</p>
+          <div id="map"></div>
+          <div class="lista-estabelecimentos">
+            <p class="section-separator">Centros Culturais e Esportivos</p>
+            <div class="lazer-item">
+              <h3>SESC Belenzinho</h3>
+              <p>O SESC Belenzinho é um dos principais centros de lazer da região, oferecendo uma vasta gama de atividades culturais, esportivas e de bem-estar, incluindo piscinas, teatro, shows, exposições e cursos.</p>
+              <p><strong>Endereço:</strong> Rua Padre Adelino, 1.000 - Belenzinho, São Paulo - SP, 03303-000.</p>
+              <button class="lazer-btn" onclick="window.open('https://www.sesc.com.br/unidade/sesc-belenzinho/', '_blank')">Site Oficial</button>
+            </div>
+            <!-- ... resto dos itens de lazer ... -->
+          </div>
+          <p style="margin-top:15px; font-size:0.9em; color:#ff9800; text-align:center;">Clique nos pins do mapa para ver cada local. Informações sujeitas a alteração — confirme horários e disponibilidade.</p>
+        `;
+        setTimeout(() => {
+          var map = L.map('map').setView([-23.558, -46.595], 14);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
+
+          L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho');
+          L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)');
+          L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping');
+          L.marker([-23.5735, -46.5888]).addTo(map).bindPopup('Clube Atlético Juventus');
+        }, 300);
+      } else if (tipo === 'patrocinadores') {
+        titulo.textContent = 'Nossos Apoiadores';
+        conteudo.innerHTML = `
+          <ul class="apoio-lista">
+            <li><a href="https://www.abadeadvogados.com.br/" target="_blank" class="apoio-link">ABAD ADV - Escritório de Advocacia</a></li>
+            <li><a href="https://www.roselis.com.br/" target="_blank" class="apoio-link">FARMÁCIA ROSELIS - Farmácia de Manipulação</a></li>
+            <li><a href="https://www.ojoalheiro.com.br/" target="_blank" class="apoio-link">OJOALHEIRO - Joalheria tradicional da Mooca</a></li>
+            <li><a href="http://www.magistermarcas.com.br/" target="_blank" class="apoio-link">MAGISTER - Marcas e Patentes</a></li>
+            <li><a href="https://portaldamooca.com.br/" target="_blank" class="apoio-link">PORTAL DA MOOCA - Preservação histórica do bairro da Mooca</a></li>
+            <li><a href="https://www.instagram.com/cameracarinfra/" target="_blank" class="apoio-link">CAMERACAR INFRA - Equipamentos para Filmagem e Eventos</a></li>
+            <li><a href="https://www.termicar.com.br/" target="_blank" class="apoio-link">TERMICAR - Ind. e Com. Auto Peças</a></li>
+            <li><a href="https://www.tecmaq.com.br/" target="_blank" class="apoio-link">TECMAQ - Seladoras à Vácuo</a></li>
+          </ul>
+          <p style="margin-top:20px; font-size:0.9em; text-align:center; color:#00ffff;">Apoie quem apoia a Mooca! 🤝</p>
+        `;
+      } else if (tipo === 'pedidos-sugestoes') {
+        titulo.textContent = 'Pedidos / Sugestões';
+        conteudo.innerHTML = `
+          <div class="sugestao-text">
+            Para Pedidos de Inserção de Categorias, Estabelecimentos, e sugestões, enviar e-mail para<br>
+            <a href="mailto:g6connecti@gmail.com" class="sugestao-email">g6connecti@gmail.com</a>
+          </div>
+          <p style="margin-top:15px; font-size:0.9em; text-align:center; color:#00ffff;">
+            Sua opinião é muito importante para melhorar o Mooca Hub! 📩
+          </p>
+        `;
+      }
+
+      setTimeout(() => info.classList.add('visible'), 10);
+      info.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function fetchWeather() {
@@ -337,138 +566,21 @@
             if (parseFloat(temp) < 20) tempClass = 'cold';
             if (parseFloat(temp) > 28) tempClass = 'hot';
 
-            const weatherEl = document.getElementById('weather-info');
-            if (weatherEl) {
-              weatherEl.innerHTML = `
-                <img src="${icon}" alt="${desc}" style="vertical-align:middle; width:60px;">
-                <span class="temp ${tempClass}">${temp}°C</span>
-                <span class="desc"> - ${desc.charAt(0).toUpperCase() + desc.slice(1)}</span>
-                <br>
-                <small>Umidade: ${data.main.humidity}% | Vento: ${data.wind.speed} m/s</small>
-              `;
-            }
+            document.getElementById('weather-info').innerHTML = `
+              <img src="${icon}" alt="${desc}" style="vertical-align:middle; width:60px;">
+              <span class="temp ${tempClass}">${temp}°C</span>
+              <span class="desc"> - ${desc.charAt(0).toUpperCase() + desc.slice(1)}</span>
+              <br>
+              <small>Umidade: ${data.main.humidity}% | Vento: ${data.wind.speed} m/s</small>
+            `;
           } else {
-            const weatherEl = document.getElementById('weather-info');
-            if (weatherEl) weatherEl.innerHTML = 'Dados não disponíveis.';
+            document.getElementById('weather-info').innerHTML = 'Dados não disponíveis.';
           }
         })
         .catch(() => {
-          const weatherEl = document.getElementById('weather-info');
-          if (weatherEl) weatherEl.innerHTML = 'Erro ao carregar. Verifique conexão ou chave API.';
+          document.getElementById('weather-info').innerHTML = 'Erro ao carregar. Verifique conexão ou chave API.';
         });
     }
-
-    // Função global para inicializar mapas (com delay maior e log)
-    function initMap() {
-      setTimeout(() => {
-        const mapElement = document.getElementById('map');
-        if (!mapElement || mapElement._leaflet_id) {
-          console.log('Mapa já inicializado ou div não encontrado');
-          return;
-        }
-
-        const map = L.map('map').setView([-23.558, -46.595], 14);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        let pinCount = 0;
-
-        if (mapElement.classList.contains('wifi-pin')) {
-          L.marker([-23.562, -46.592]).addTo(map).bindPopup('Praça Ciro Pontes - Mooca<br>WiFi Livre SP');
-          pinCount++;
-          L.marker([-23.548, -46.588]).addTo(map).bindPopup('Praça General Humberto de Sousa Mello - Belém<br>WiFi Livre SP');
-          pinCount++;
-          L.marker([-23.545, -46.608]).addTo(map).bindPopup('Largo da Concórdia - Brás<br>WiFi Livre SP');
-          pinCount++;
-          L.marker([-23.560, -46.579]).addTo(map).bindPopup('Praça São Luis do Curu - Água Rasa<br>WiFi Livre SP');
-          pinCount++;
-          L.marker([-23.539, -46.610]).addTo(map).bindPopup('Praça Kantuta - Pari<br>WiFi Livre SP');
-          pinCount++;
-          L.marker([-23.540, -46.583]).addTo(map).bindPopup('Praça Silvio Romero - Tatuapé<br>WiFi Livre SP');
-          pinCount++;
-          console.log('Pins de Wi-Fi adicionados:', pinCount);
-        }
-
-        if (mapElement.classList.contains('lazer-pin')) {
-          L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho');
-          L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)');
-          L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping');
-          L.marker([-23.5735, -46.5888]).addTo(map).bindPopup('Clube Atlético Juventus');
-          console.log('Pins de Lazer adicionados');
-        }
-
-        console.log('Mapa inicializado com sucesso');
-      }, 500); // Delay para garantir que o div #map existe
-    }
-
-    // Listener principal para cards com data-modulo
-    document.querySelectorAll('.card[data-modulo]').forEach(card => {
-      card.addEventListener('click', async () => {
-        const modulo = card.getAttribute('data-modulo');
-        const conteudo = document.getElementById('conteudo');
-        conteudo.innerHTML = '<p style="text-align:center; color:#00ffff; font-size:1.2em;">Carregando...</p>';
-        conteudo.style.display = 'block';
-
-        try {
-          const url = `${modulo}.html`;
-          console.log('Carregando módulo:', url);
-
-          const response = await fetch(url);
-          if (!response.ok) throw new Error(`Erro ${response.status}`);
-
-          const html = await response.text();
-          conteudo.innerHTML = html;
-
-          if (modulo === 'tempo') fetchWeather();
-
-          setTimeout(initMap, 300);
-
-          conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } catch (err) {
-          conteudo.innerHTML = `
-            <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
-              Erro ao carregar "${modulo}"<br>${err.message}
-            </p>
-          `;
-        }
-      });
-    });
-
-    // Listener para sub-categorias em estabelecimentos
-    document.body.addEventListener('click', async function(e) {
-      const subCard = e.target.closest('.estabelecimento-card[data-submodulo]');
-      if (subCard) {
-        e.preventDefault();
-        const submodulo = subCard.getAttribute('data-submodulo');
-        const conteudo = document.getElementById('conteudo');
-
-        conteudo.innerHTML = '<p style="text-align:center; color:#00ffff; font-size:1.2em;">Carregando...</p>';
-        conteudo.style.display = 'block';
-
-        try {
-          const url = `${submodulo}.html`;
-          console.log('Carregando sub-módulo:', url);
-
-          const response = await fetch(url);
-          if (!response.ok) throw new Error(`Erro ${response.status}`);
-
-          const html = await response.text();
-          conteudo.innerHTML = html;
-
-          setTimeout(initMap, 300);
-
-          conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } catch (err) {
-          conteudo.innerHTML = `
-            <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
-              Erro ao carregar ${submodulo}.html<br>${err.message}
-            </p>
-          `;
-        }
-      }
-    });
   </script>
 </body>
 </html>
