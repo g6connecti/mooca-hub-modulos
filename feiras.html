@@ -14,79 +14,85 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Terça-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Terça-feira">
+        <td>Terça-feira <span class="bolinha"></span></td>
         <td>Feira Moraes Barros</td>
         <td>Rua Firmiano Pinto</td>
       </tr>
-      <tr>
-        <td>Terça-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Terça-feira">
+        <td>Terça-feira <span class="bolinha"></span></td>
         <td>Feira Parque da Mooca</td>
         <td>Rua Conde de Prates</td>
       </tr>
-      <tr>
-        <td>Terça-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Terça-feira">
+        <td>Terça-feira <span class="bolinha"></span></td>
         <td>Feira Décio Abrahão</td>
         <td>Rua Décio Ábramo, nº 412</td>
       </tr>
-      <tr>
-        <td>Terça-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Terça-feira">
+        <td>Terça-feira <span class="bolinha"></span></td>
         <td>Feira Pires de Campos</td>
         <td>Rua Pires de Campos</td>
       </tr>
-      <tr>
-        <td>Terça-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Terça-feira">
+        <td>Terça-feira <span class="bolinha"></span></td>
         <td>Feira Dom Bosco</td>
         <td>Rua Dom Bosco</td>
       </tr>
-
-      <tr>
-        <td>Quarta-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Quarta-feira">
+        <td>Quarta-feira <span class="bolinha"></span></td>
         <td>Feira Madre de Deus</td>
         <td>Rua Madre de Deus, nº 604</td>
       </tr>
-      <tr>
-        <td>Quarta-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Quarta-feira">
+        <td>Quarta-feira <span class="bolinha"></span></td>
         <td>Feira Mooca Moderna</td>
         <td>Rua dos Trilhos, nº 869</td>
       </tr>
-
-      <tr>
-        <td>Quinta-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Quinta-feira">
+        <td>Quinta-feira <span class="bolinha"></span></td>
         <td>Feira Alto da Mooca</td>
         <td>Rua Itanhaém</td>
       </tr>
-      <tr>
-        <td>Quinta-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Quinta-feira">
+        <td>Quinta-feira <span class="bolinha"></span></td>
         <td>Feira Vila Oratório</td>
         <td>Rua Silva Coutinho, S/N</td>
       </tr>
-      <tr>
-        <td>Quinta-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Quinta-feira">
+        <td>Quinta-feira <span class="bolinha"></span></td>
         <td>Feira Mãe do Céu</td>
         <td>Rua Visconde de Itaboraí, nº 233</td>
       </tr>
-      <tr>
-        <td>Quinta-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Quinta-feira">
+        <td>Quinta-feira <span class="bolinha"></span></td>
         <td>Feira Machado Tolosa</td>
         <td>Rua Machado Tolosa</td>
       </tr>
-
-      <tr>
-        <td>Sexta-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Sexta-feira">
+        <td>Sexta-feira <span class="bolinha"></span></td>
         <td>Feira Jaibarás</td>
         <td>Rua Jaibarás</td>
       </tr>
-      <tr>
-        <td>Sexta-feira <span class="bolinha ativa"></span></td>
+      <tr data-dia="Sexta-feira">
+        <td>Sexta-feira <span class="bolinha"></span></td>
         <td>Feira Bom Jesus</td>
         <td>Rua Bom Jesus</td>
       </tr>
-
-      <tr>
-        <td>Sábado <span class="bolinha ativa"></span></td>
+      <tr data-dia="Sábado">
+        <td>Sábado <span class="bolinha"></span></td>
         <td>Feira Mooca (Tabajaras)</td>
         <td>Rua Tabajaras, entre 227 e 366</td>
+      </tr>
+      <tr data-dia="Sábado">
+        <td>Sábado <span class="bolinha"></span></td>
+        <td>Feira Serra de Jairé</td>
+        <td>Rua Serra de Jairé, entre 760 e 908</td>
+      </tr>
+      <tr data-dia="Domingo">
+        <td>Domingo <span class="bolinha"></span></td>
+        <td>Feira Mooca Moderna (Bresser)</td>
+        <td>Rua Bresser, nº 2701</td>
       </tr>
     </tbody>
   </table>
@@ -102,15 +108,24 @@
 <script>
   // Mostra o dia da semana atual no texto
   function getDiaSemana() {
-    const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
     const hoje = new Date().getDay();
     return dias[hoje];
   }
 
   document.getElementById('dia-atual').textContent = getDiaSemana();
 
-  // Marca as bolinhas como ativas apenas para o dia atual (já feito no HTML)
-  // A classe .ativa já está no HTML para os dias corretos; o CSS cuida da cor e piscar
+  // Aplica classes dinâmicas para bolinhas baseadas no dia atual
+  const diaAtual = getDiaSemana();
+  const linhas = document.querySelectorAll('tbody tr');
+  linhas.forEach(linha => {
+    const diaLinha = linha.getAttribute('data-dia');
+    const bolinha = linha.querySelector('.bolinha');
+    if (diaLinha === diaAtual) {
+      bolinha.classList.add('ativa');
+    } else {
+      bolinha.classList.add('inativa');
+    }
+  });
 </script>
-
 
