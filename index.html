@@ -204,7 +204,7 @@
       border-bottom: 1px solid #444;
       padding-bottom: 10px;
     }
-    /* CSS das bolinhas - adicionado ou confirmado aqui */
+    /* CSS DAS BOLINHAS - GARANTIDO AQUI */
     .bolinha {
       display: inline-block !important;
       width: 14px !important;
@@ -212,7 +212,6 @@
       border-radius: 50% !important;
       margin-right: 10px !important;
       vertical-align: middle !important;
-      background: transparent !important; /* fallback */
     }
     .bolinha.ativa {
       background: #00ff00 !important;
@@ -359,7 +358,6 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
-      // Pins para Wi-Fi
       if (mapElement.classList.contains('wifi-pin')) {
         L.marker([-23.562, -46.592]).addTo(map).bindPopup('Praça Ciro Pontes - Mooca<br>WiFi Livre SP');
         L.marker([-23.548, -46.588]).addTo(map).bindPopup('Praça General Humberto de Sousa Mello - Belém<br>WiFi Livre SP');
@@ -369,7 +367,6 @@
         L.marker([-23.540, -46.583]).addTo(map).bindPopup('Praça Silvio Romero - Tatuapé<br>WiFi Livre SP');
       }
 
-      // Pins para Lazer
       if (mapElement.classList.contains('lazer-pin')) {
         L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho');
         L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)');
@@ -449,3 +446,4 @@
   </script>
 </body>
 </html>
+
