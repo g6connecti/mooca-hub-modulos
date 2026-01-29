@@ -204,38 +204,38 @@
       border-bottom: 1px solid #444;
       padding-bottom: 10px;
     }
-    /* CSS DAS BOLINHAS - REFORÇADO AO MÁXIMO */
+    /* CSS DAS BOLINHAS - REFORÇADO EXTREMO PARA APARECER NO DESKTOP */
     .bolinha {
       display: inline-block !important;
-      width: 16px !important;
-      height: 16px !important;
+      width: 18px !important;
+      height: 18px !important;
       border-radius: 50% !important;
-      margin-right: 12px !important;
+      margin-right: 15px !important;
       vertical-align: middle !important;
       background: transparent !important;
-      border: 2px solid #ffffff80 !important; /* borda sutil para contorno */
+      border: 2px solid #ffffff !important; /* borda branca para contorno sempre visível */
     }
     .bolinha.ativa {
-      background: #00ff00 !important;
-      box-shadow: 0 0 12px #00ff00 !important;
+      background-color: #00ff00 !important;
+      box-shadow: 0 0 15px #00ff00, inset 0 0 5px #00ff00 !important;
       animation: piscar 1.5s infinite !important;
     }
     .bolinha.inativa {
-      background: #ff4444 !important;
-      box-shadow: 0 0 8px #ff4444 !important;
+      background-color: #ff4444 !important;
+      box-shadow: 0 0 10px #ff4444 !important;
     }
     @keyframes piscar {
-      0% { opacity: 1; }
-      50% { opacity: 0.4; }
-      100% { opacity: 1; }
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.1); }
+      100% { opacity: 1; transform: scale(1); }
     }
-    /* Reforço extra no desktop */
+    /* Reforço ainda maior no desktop */
     @media (min-width: 768px) {
       .bolinha {
-        width: 20px !important;
-        height: 20px !important;
-        margin-right: 15px !important;
-        border: 2px solid #ffffff !important;
+        width: 22px !important;
+        height: 22px !important;
+        margin-right: 18px !important;
+        border: 3px solid #ffffff !important;
       }
     }
     .apoio-lista {
@@ -458,3 +458,4 @@
   </script>
 </body>
 </html>
+
