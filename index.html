@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mooca Hub - Tudo do Bairro na Palma da Mão</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    /* Seu CSS completo aqui – copie do anterior para não perder nada */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #121212, #1e1e1e);
+      margin: 0;
+      padding: 20px;
+      color: #f0f0f0;
+    }
+    /* ... todo o resto do CSS que você tinha, incluindo .promo-tag, .bolinha, etc. ... */
+    #map {
+      height: 400px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .lazer-item {
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      border: 1px solid #00ffff;
+    }
+    .lazer-item h3 {
+      color: #00ff00;
+      margin: 0 0 8px;
+    }
+    .lazer-item p {
+      margin: 5px 0;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header e grid da tela inicial (igual ao anterior) -->
+  <header>
+    <h1>Mooca Hub - Tudo do Bairro na Palma da Mão</h1>
+    <p>Informações rápidas e úteis do bairro da Mooca - SP</p>
+  </header>
+
+  <div class="grid">
+    <!-- Seus cards da tela inicial aqui -->
+    <div class="card" onclick="showInfo('lazer')"><div class="emoji">🌳</div><h2>Lazer</h2></div>
+    <!-- ... outros cards ... -->
+  </div>
+
+  <div id="info">
+    <h2 id="titulo"></h2>
+    <div id="conteudo"></div>
+    <button class="close-btn" onclick="fecharInfo()">Fechar</button>
+  </div>
+
+  <script>
+    // Suas funções fecharInfo, getDiaSemana, redirectToPizzarias, fetchWeather, etc. (copie do anterior)
+
+    function showInfo(tipo) {
+      // ... código anterior ...
+
+      if (tipo === 'lazer') {
+        titulo.textContent = 'Lazer na Mooca e Região';
+        conteudo.innerHTML = `
+          <p>Principais opções de lazer, parques, shoppings, teatros e clubes no bairro e arredores.</p>
+          <div id="map"></div>
+          <div class="lista-estabelecimentos">
+            <p class="section-separator">Centros Culturais e Esportivos</p>
+            <div class="lazer-item">
+              <h3>SESC Belenzinho</h3>
+              <p>O SESC Belenzinho é um dos principais centros de lazer da região, oferecendo uma vasta gama de atividades culturais, esportivas e de bem-estar, incluindo piscinas, teatro, shows, exposições e cursos.</p>
+              <p><strong>Endereço:</strong> Rua Padre Adelino, 1.000 - Belenzinho, São Paulo - SP, 03303-000.</p>
+              <button class="lazer-btn" onclick="window.open('https://www.sescsp.org.br/unidades/belenzinho', '_blank')">Site Oficial</button>
+            </div>
+
+            <p class="section-separator">Parques e Áreas Verdes</p>
+            <div class="lazer-item">
+              <h3>Parque da Mooca (CEE Salim Farah Maluf)</h3>
+              <p>Um grande espaço para a prática de esportes e lazer, conhecido localmente como "Distrital", que oferece atividades gratuitas e áreas de convivência.</p>
+              <p><strong>Endereço:</strong> Rua Taquari, 573 - Mooca, São Paulo - SP.</p>
+              <p>Informações no portal da Prefeitura de SP.</p>
+            </div>
+            <div class="lazer-item">
+              <h3>Parque Sabesp Mooca Radialista Fiori Gigliotti</h3>
+              <p>Uma opção de lazer com áreas verdes para caminhada e momentos de relaxamento.</p>
+              <p><strong>Endereço:</strong> Avenida Paes de Barros, 2107 - Alto da Mooca, São Paulo - SP.</p>
+              <p>Informações em guias locais.</p>
+            </div>
+
+            <p class="section-separator">Shoppings Centers</p>
+            <div class="lazer-item">
+              <h3>Mooca Plaza Shopping</h3>
+              <p>Um shopping center completo com diversas lojas, praça de alimentação, cinemas e serviços, sendo um ponto de encontro popular na região.</p>
+              <p><strong>Endereço:</strong> Rua Capitão Pacheco e Chaves, 313 - Vila Prudente, São Paulo - SP, 03126-000.</p>
+              <button class="lazer-btn" onclick="window.open('https://moocaplaza.com.br/', '_blank')">Site Oficial</button>
+            </div>
+
+            <p class="section-separator">Teatros e Espaços Culturais</p>
+            <div class="lazer-item">
+              <h3>Museu da Imigração do Estado de São Paulo</h3>
+              <p>Embora não seja um teatro, é um importante ponto cultural na região do Belenzinho/Mooca, ideal para quem gosta de história e arquitetura.</p>
+              <p><strong>Endereço:</strong> Rua Visconde de Parnaíba, 1316 - Mooca, São Paulo - SP.</p>
+              <button class="lazer-btn" onclick="window.open('https://museudaimigracao.org.br/', '_blank')">Site Oficial</button>
+            </div>
+            <div class="lazer-item">
+              <h3>Lilith Comedy Club</h3>
+              <p>Um espaço dedicado a apresentações de stand-up comedy, próximo ao Shopping Mooca.</p>
+              <p><strong>Endereço:</strong> Rua Capitão Pacheco e Chaves, 981 - Vila Prudente, São Paulo - SP, 03126-001.</p>
+            </div>
+
+            <p class="section-separator">Clubes</p>
+            <div class="lazer-item">
+              <h3>Clube Atlético Juventus</h3>
+              <p>Um clube tradicional com uma vasta gama de atividades esportivas e sociais, incluindo natação, academia e eventos sociais.</p>
+              <p><strong>Endereço:</strong> Rua Comendador Roberto Ugolini, 20 - Parque da Mooca, São Paulo - SP, 03125-010.</p>
+              <button class="lazer-btn" onclick="window.open('https://www.juventus.com.br/', '_blank')">Site Oficial</button>
+            </div>
+            <div class="lazer-item">
+              <h3>Clube Escola da Mooca (CEE Salim Farah Maluf)</h3>
+              <p>Oferece atividades esportivas e de lazer gratuitas, com instalações que incluem piscinas e quadras, sendo um espaço público de convivência para a comunidade.</p>
+              <p><strong>Endereço:</strong> Rua Taquari, 635 - Mooca, São Paulo - SP, 03166-000.</p>
+              <p>Informações no portal da Prefeitura de São Paulo.</p>
+            </div>
+            <div class="lazer-item">
+              <h3>Clube Atlético Parque da Mooca</h3>
+              <p>Um clube social e esportivo com uma longa história, oferecendo espaços para a prática de esportes, como quadras de futebol.</p>
+              <p><strong>Endereço:</strong> Rua Padre Raposo, 837 - Alto da Mooca, São Paulo - SP, 03118-001.</p>
+              <p>Mais Informações</p>
+            </div>
+            <div class="lazer-item">
+              <h3>Leão do Norte Futebol Clube</h3>
+              <p>Clube com tradição desde 1935, conhecido por suas atividades esportivas amadoras e espaços para eventos.</p>
+              <p><strong>Endereço:</strong> Rua Passarola, 85 - Quarta Parada (próximo à Mooca), São Paulo - SP, 03178-210.</p>
+              <p>Páginas em redes sociais como @leaodonorte.fc no Instagram.</p>
+            </div>
+          </div>
+          <p style="margin-top:15px; font-size:0.9em; color:#ff9800; text-align:center;">
+            Clique nos pins do mapa para ver cada local. Informações sujeitas a alteração — confirme horários e disponibilidade.
+          </p>
+        `;
+        setTimeout(() => {
+          var map = L.map('map').setView([-23.558, -46.595], 14);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
+
+          // Pins aproximados para os locais (ajuste coordenadas se quiser mais precisão)
+          L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho<br>Rua Padre Adelino, 1.000');
+          L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)<br>Rua Taquari, 573');
+          L.marker([-23.5585, -46.5900]).addTo(map).bindPopup('Parque Sabesp Mooca Radialista Fiori Gigliotti<br>Av. Paes de Barros, 2107');
+          L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping<br>Rua Cap. Pacheco e Chaves, 313');
+          L.marker([-23.5450, -46.5950]).addTo(map).bindPopup('Museu da Imigração<br>Rua Visconde de Parnaíba, 1316');
+          L.marker([-23.5680, -46.6000]).addTo(map).bindPopup('Lilith Comedy Club<br>Rua Cap. Pacheco e Chaves, 981');
+          L.marker([-23.5625, -46.5925]).addTo(map).bindPopup('Clube Atlético Juventus<br>Rua Comendador Roberto Ugolini, 20');
+          L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Clube Escola da Mooca (CEE Salim Farah Maluf)<br>Rua Taquari, 635');
+          L.marker([-23.5550, -46.5850]).addTo(map).bindPopup('Clube Atlético Parque da Mooca<br>Rua Padre Raposo, 837');
+          L.marker([-23.5750, -46.6050]).addTo(map).bindPopup('Leão do Norte Futebol Clube<br>Rua Passarola, 85');
+        }, 300);
+      }
+
+      // ... mantenha os outros if/else para os demais tipos (seguranca, estabelecimentos, etc.) como no seu último index.html funcional ...
+
+      setTimeout(() => info.classList.add('visible'), 10);
+      info.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ... mantenha fetchWeather e outras funções ...
+  </script>
+</body>
+</html>
