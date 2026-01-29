@@ -1,0 +1,85 @@
+<h2>Estabelecimentos Comerciais da Mooca</h2>
+
+<p style="text-align:center; margin-bottom:25px; font-size:1.1em; color:#00ffff;">
+  Escolha a categoria para ver a lista completa de estabelecimentos
+</p>
+
+<div class="estabelecimentos-grid">
+  <div class="estabelecimento-card" data-submodulo="acougues">
+    <div class="emoji">🥩</div>
+    <h2>Açougues</h2>
+  </div>
+
+  <div class="estabelecimento-card" data-submodulo="emporios">
+    <div class="emoji">🧀</div>
+    <h2>Empórios</h2>
+  </div>
+
+  <div class="estabelecimento-card" data-submodulo="farmacias">
+    <div class="emoji">💊</div>
+    <h2>Farmácias</h2>
+  </div>
+
+  <div class="estabelecimento-card" data-submodulo="feiras">
+    <div class="emoji">🥕</div>
+    <h2>Feiras Livres</h2>
+  </div>
+
+  <div class="estabelecimento-card" data-submodulo="hamburguer">
+    <div class="emoji">🍔</div>
+    <h2>Hamburguer</h2>
+  </div>
+
+  <div class="estabelecimento-card" data-submodulo="mercados">
+    <div class="emoji">🛒</div>
+    <h2>Mercados</h2>
+  </div>
+
+  <div class="estabelecimento-card" data-submodulo="padarias">
+    <div class="emoji">🥖</div>
+    <h2>Padarias</h2>
+  </div>
+
+  <div class="estabelecimento-card" data-submodulo="restaurantes">
+    <div class="emoji">🍽️</div>
+    <h2>Restaurantes</h2>
+  </div>
+
+  <div class="estabelecimento-card" onclick="window.open('https://pizzaria-finder-copy-e01ee74b.base44.app/', '_blank')">
+    <div class="emoji">🍕</div>
+    <h2>Pizzarias</h2>
+  </div>
+</div>
+
+<p style="margin-top:25px; font-size:0.9em; text-align:center; color:#ff9800;">
+  Clique em uma categoria para ver os estabelecimentos cadastrados.<br>
+  Pizzarias abre o buscador completo externo.
+</p>
+
+<button class="close-btn" onclick="fecharModulo()">Fechar</button>
+
+<script>
+  // Script para fazer os cards internos carregarem via fetch (igual ao index)
+  document.querySelectorAll('.estabelecimento-card[data-submodulo]').forEach(card => {
+    card.addEventListener('click', async () => {
+      const submodulo = card.getAttribute('data-submodulo');
+      const conteudo = document.getElementById('conteudo');
+      if (!conteudo) return; // Segurança caso não esteja no contexto do index
+
+      conteudo.innerHTML = '<p style="text-align:center; color:#00ffff; font-size:1.2em;">Carregando...</p>';
+      conteudo.style.display = 'block';
+
+      try {
+        const url = `${submodulo}.html`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Erro ${response.status}`);
+
+        const html = await response.text();
+        conteudo.innerHTML = html;
+        conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        conteudo.innerHTML = `<p style="color:#ff4444; text-align:center; font-size:1.2em;">Erro ao carregar ${submodulo}.html<br>${err.message}</p>`;
+      }
+    });
+  });
+</script>
