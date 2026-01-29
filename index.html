@@ -461,39 +461,162 @@
             <button class="acougue-btn" onclick="window.open('https://thebestmeat.com.br', '_blank')">The Best Meat (Carnes Nobres)<br>Avenida Paes de Barros, 131</button>
           </div>
         `;
-      } else if (tipo === 'feiras') {
-        titulo.textContent = 'Feiras Livres na Mooca';
-        let html = '<div class="lista-estabelecimentos overflow-x"><table><thead><tr><th>Dia da Semana</th><th>Nome da Feira / Localização</th><th>Endereço</th></tr></thead><tbody>';
+      } else if (tipo === 'emporios') {
+        titulo.textContent = 'Empórios e Laticínios da Mooca';
+        conteudo.innerHTML = `
+          <div class="lista-estabelecimentos">
+            <p class="section-separator">Empórios e Laticínios Principais</p>
+            <button class="emporio-btn" onclick="window.open('https://www.instagram.com/casasagresoficial/', '_blank')">Casa Sagres (Laticínios e Empório)<br>Rua Madre de Deus, 485</button>
+            <button class="emporio-btn" onclick="window.open('https://www.instagram.com/cerealistadamooca/', '_blank')">Cerealista da Mooca<br>Av. Cassandoca, 800</button>
+            <button class="emporio-btn" onclick="window.open('https://www.facebook.com/emporiobellavida', '_blank')">Empório Bella Vida<br>Av. Cassandoca, 427</button>
+            <button class="emporio-btn" onclick="window.open('https://www.facebook.com/brasaearte/', '_blank')">Empório Brasa & Arte<br>Rua da Mooca, 3143</button>
+            <button class="emporio-btn" onclick="window.open('https://emporiocoisasdeminas.com.br', '_blank')">Empório Coisas de Minas<br>Rua Taquari, 81</button>
 
-        const feiras = [
-          { dia: 'Terça-feira', nome: 'Feira Moraes Barros', endereco: 'Rua Firmiano Pinto' },
-          { dia: 'Terça-feira', nome: 'Feira Parque da Mooca', endereco: 'Rua Conde de Prates' },
-          { dia: 'Terça-feira', nome: 'Feira Décio Abrahão', endereco: 'Rua Décio Ábramo, nº 412' },
-          { dia: 'Terça-feira', nome: 'Feira Pires de Campos', endereco: 'Rua Pires de Campos' },
-          { dia: 'Terça-feira', nome: 'Feira Dom Bosco', endereco: 'Rua Dom Bosco' },
-          { dia: 'Quarta-feira', nome: 'Feira Madre de Deus', endereco: 'Rua Madre de Deus, nº 604' },
-          { dia: 'Quarta-feira', nome: 'Feira Mooca Moderna', endereco: 'Rua dos Trilhos, nº 869' },
-          { dia: 'Quinta-feira', nome: 'Feira Alto da Mooca', endereco: 'Rua Itanhaém' },
-          { dia: 'Quinta-feira', nome: 'Feira Vila Oratório', endereco: 'Rua Silva Coutinho, S/N' },
-          { dia: 'Quinta-feira', nome: 'Feira Mãe do Céu', endereco: 'Rua Visconde de Itaboraí, nº 233' },
-          { dia: 'Quinta-feira', nome: 'Feira Machado Tolosa', endereco: 'Rua Machado Tolosa' },
-          { dia: 'Sexta-feira', nome: 'Feira Jaibarás', endereco: 'Rua Jaibarás' },
-          { dia: 'Sexta-feira', nome: 'Feira Bom Jesus', endereco: 'Rua Bom Jesus' },
-          { dia: 'Sábado', nome: 'Feira Mooca (Tabajaras)', endereco: 'Rua Tabajaras, entre 227 e 366' },
-          { dia: 'Sábado', nome: 'Feira Serra de Jairé', endereco: 'Rua Serra de Jairé, entre 760 e 908' },
-          { dia: 'Domingo', nome: 'Feira Mooca Moderna (Bresser)', endereco: 'Rua Bresser, nº 2701' },
-        ];
+            <p class="section-separator">Empórios e Laticínios Diversos</p>
+            <button class="emporio-btn" onclick="window.open('https://www.instagram.com/emporio_da_mooca/', '_blank')">Empório da Mooca (Bistrô e Café)<br>Rua da Mooca, 1218</button>
+            <button class="emporio-btn" onclick="window.open('https://emporiostarita.com.br', '_blank')">Empório Santa Rita<br>Rua da Mooca, 3879</button>
+            <button class="emporio-btn" onclick="window.open('https://www.instagram.com/emporiosaudeesabor/', '_blank')">Empório Saúde e Sabor<br>Rua da Mooca, 2028</button>
+            <button class="emporio-btn" onclick="window.open('https://www.instagram.com/laticiniosbresser/', '_blank')">Laticínios e Empório Bresser<br>Rua Bresser, 2690</button>
+            <button class="emporio-btn" onclick="window.open('https://www.facebook.com/FGLaticinios/?locale=pt_BR', '_blank')">F&G Empório e Laticínios<br>Rua da Mooca 4487</button>
+            <button class="emporio-btn" onclick="window.open('https://laticiniosloreto.com.br', '_blank')">Laticínios Loreto<br>Rua Inácio de Araújo, 401</button>
+            <button class="emporio-btn" onclick="window.open('https://www.instagram.com/laticiniosmooca/', '_blank')">Laticínios Mooca<br>Av. Cassandoca, 812</button>
+            <button class="emporio-btn" onclick="window.open('https://www.instagram.com/laticiniospopoio/', '_blank')">Laticínios Popoio<br>Rua Madre de Deus, 292</button>
+            <button class="emporio-btn" onclick="window.open('https://santissimoemporiost.com.br', '_blank')">Santíssimo Empório<br>Rua do Oratório, 1626</button>
+            <button class="emporio-btn" onclick="window.open('https://vegsim.com.br', '_blank')">VegSim (Empório Vegano)<br>Av. Cassandoca, 125</button>
+          </div>
+        `;
+      } else if (tipo === 'farmacias') {
+        titulo.textContent = 'Farmácias na Mooca';
+        conteudo.innerHTML = `
+          <div class="lista-estabelecimentos">
+            <p class="section-separator">Farmácias 24h</p>
+            <button class="farm-btn" onclick="window.open('https://www.drogasil.com.br/nossas-lojas', '_blank')">Drogasil - Mooca (24h)</button>
+            <button class="farm-btn" onclick="window.open('https://www.drogaraia.com.br/nossas-lojas', '_blank')">Droga Raia - Mooca (24h)</button>
+            <button class="farm-btn" onclick="window.open('https://www.drogariasaopaulo.com.br/nossas-lojas', '_blank')">Drogaria São Paulo - Mooca (24h)</button>
 
-        feiras.forEach(feira => {
-          const isHoje = feira.dia.includes(diaHoje);
-          const classeBolinha = isHoje ? 'bolinha ativa' : 'bolinha inativa';
-          html += `<tr><td><span class="${classeBolinha}"></span> ${feira.dia}</td><td>${feira.nome}</td><td>${feira.endereco}</td></tr>`;
-        });
+            <p class="section-separator">Farmácias comuns (não 24h)</p>
+            <button class="farm-comum-btn" onclick="window.open('https://farmaciaalcantaramachado.com.br', '_blank')">Drogaria Alcantara Machado<br>Rua da Mooca, 1233</button>
+            <button class="farm-comum-btn" onclick="window.open('https://www.facebook.com/clinifar', '_blank')">Drogaria Clinifar Mooca<br>Rua dos Trilhos, 1493</button>
+            <button class="farm-comum-btn" onclick="window.open('https://www.instagram.com/drogariafalcao/', '_blank')">Drogaria Falcão<br>Rua da Mooca, 3036</button>
+            <button class="farm-comum-btn" onclick="window.open('https://www.joanin.com.br', '_blank')">Drogaria Joanin (Loja 26)<br>Rua dos Trilhos, 1422</button>
+            <button class="farm-comum-btn" onclick="window.open('https://www.instagram.com/drogariamenorpreco/', '_blank')">Drogaria Menor Preço<br>Rua Zumbi dos Palmares, 275</button>
+            <button class="farm-comum-btn" onclick="window.open('https://moocaplaza.com.br', '_blank')">Drogaria São Paulo (Mooca Plaza Shopping)<br>Rua Cap. Pacheco e Chaves, 313</button>
+            <button class="farm-comum-btn" onclick="window.open('https://www.drogariasaopaulo.com.br', '_blank')">Drogaria São Paulo (Rua da Mooca)<br>Rua da Mooca, 3691</button>
+            <button class="farm-comum-btn" onclick="window.open('https://unidades.franquiafarmelhor.com.br/farmelhor-belenzinho-sao-paulo-sp-73583', '_blank')">Drogaria Siqueira Bueno / FarMelhor<br>Rua Siqueira Bueno, 2066</button>
+            <button class="farm-comum-btn" onclick="window.open('https://semprecuidando.com.br/farmacias/farma-d-popularr-siqueira-bueno-186217-304-162-0001-16011-2783-8180/', '_blank')">Farma D+ Popular<br>Rua Siqueira Bueno, 1862</button>
+            <button class="farm-comum-btn" onclick="window.open('https://remediobarato.com', '_blank')">Farmais Alto da Mooca<br>Rua do Oratório, 1944</button>
+            <button class="farm-comum-btn" onclick="window.open('https://promofarma.com.br', '_blank')">PromoFarma Mooca<br>Rua da Mooca, 2697</button>
+            <button class="farm-comum-btn" onclick="window.open('https://ultrafarma.com.br', '_blank')">Ultrafarma Popular<br>Rua do Oratório, 1312</button>
 
-        html += '</tbody></table></div>';
-        html += '<p style="margin-top:15px; font-size:0.9em; text-align:center; color:#00ffff;">Horários geralmente das 7h às 13h — confirme no local ou com a prefeitura. Hoje é ' + diaHoje + '!</p>';
+            <p class="section-separator">Farmácias de Manipulação e Homeopatia</p>
+            <button class="farm-manip-btn" onclick="window.open('https://boticaaexotica.com.br', '_blank')">Botica Aexótica<br>Rua da Mooca, 2736</button>
+            <button class="farm-manip-btn" onclick="window.open('https://cpdf.com.br', '_blank')">Centro Paulista Farmácia<br>Rua do Oratório, 1352</button>
+            <button class="farm-manip-btn" onclick="window.open('https://manipulacao.drogasil.com.br', '_blank')">Drogasil Manipulação<br>Rua Paes de Barros, 133</button>
+            <button class="farm-manip-btn" onclick="window.open('https://formula-ativa.com.br', '_blank')">Fórmula Ativa<br>Rua Curupaite, 521</button>
+            <button class="farm-manip-btn" onclick="window.open('https://mphfarmacia.com.br', '_blank')">MPH Farmácia de Manipulação<br>Av. Paes de Barros, 1491</button>
+            <button class="farm-manip-btn" onclick="window.open('https://pharmaplusmanipulacao.com.br', '_blank')">Pharma Plus Manipulação<br>Rua Siqueira Bueno, 2212</button>
+            <button class="farm-manip-btn" onclick="window.open('https://pharmacare.com.br', '_blank')">Pharma Care<br>Rua Bresser, 2901</button>
+            <button class="farm-manip-btn" onclick="window.open('https://roselis.com.br', '_blank')">Rosélis Farmácia de Manipulação<br>Rua do Oratório, 268</button>
+            <button class="farm-manip-btn" onclick="window.open('https://sinete.com.br', '_blank')">Sinete Drogaria e Manipulação<br>Rua dos Trilhos, 1435</button>
+            <button class="farm-manip-btn" onclick="window.open('https://unaformula.com.br', '_blank')">Una Fórmula (Humana e Veterinária)<br>Rua do Oratório, 1013</button>
+            <button class="farm-manip-btn" onclick="window.open('https://unipharmus.com.br', '_blank')">Unipharmus<br>Rua da Mooca, 2707</button>
+          </div>
+        `;
+      } else if (tipo === 'hamburguer') {
+        titulo.textContent = 'Hamburguerias da Mooca';
+        conteudo.innerHTML = `
+          <div class="lista-estabelecimentos">
+            <button class="hamburguer-btn" onclick="window.open('https://bombeefburgers.com.br', '_blank')">Bom Beef Burgers (Netão)<br>Rua Cap. Pacheco e Chaves, 313 (Shopping Mooca Plaza)</button>
+            <button class="hamburguer-btn" onclick="window.open('https://burgerking.com.br', '_blank')">Burger King (Radial Leste)<br>Av. Alcântara Machado, 2816 (próximo à estação Belém/Mooca)</button>
+            <button class="hamburguer-btn" onclick="window.open('https://www.instagram.com/burmooca', '_blank')">Burmooca<br>Rua Visconde de Laguna, 193</button>
+            <button class="hamburguer-btn" onclick="window.open('https://cadillacburger.com', '_blank')">Cadillac Burger<br>Rua Juventus, 296</button>
+            <button class="hamburguer-btn" onclick="window.open('https://johnsburguer.com.br', '_blank')">John's Burguer<br>Rua Leme da Silva, 297</button>
+            <button class="hamburguer-btn" onclick="window.open('https://labrasaburger.com', '_blank')">La Brasa Burger<br>Rua Cassandoca, 555</button>
+            <button class="hamburguer-btn" onclick="window.open('https://maneburger.com.br', '_blank')">Mané Burger<br>Rua Madre de Deus, 526</button>
+            <button class="hamburguer-btn" onclick="window.open('https://mcdonalds.com.br', '_blank')">McDonald's (Av. Paes de Barros)<br>Av. Paes de Barros, 1485</button>
+            <button class="hamburguer-btn" onclick="window.open('https://novohamburger.com.br', '_blank')">Novo Hamburger<br>Rua Jumana, 334</button>
+            <button class="hamburguer-btn" onclick="window.open('https://www.instagram.com/sixburgersp', '_blank')">Six Burgers<br>Rua Fernando Falcão, 1024</button>
+            <button class="hamburguer-btn" onclick="window.open('https://standardburgeroficial.com.br', '_blank')">Standard Burger<br>Rua Sebastião Preto, 43</button>
+          </div>
+        `;
+      } else if (tipo === 'mercados') {
+        titulo.textContent = 'Mercados e Supermercados da Mooca';
+        conteudo.innerHTML = `
+          <div class="lista-estabelecimentos">
+            <button class="mercado-btn" onclick="window.open('https://assai.com.br', '_blank')">Assaí Atacadista (Mooca/Pari)<br>Av. Alcântara Machado, 3350</button>
+            <button class="mercado-btn" onclick="window.open('https://mercadobellamooca.com.br', '_blank')">Bella Mooca Supermercado<br>Rua Juventus, 203</button>
+            <button class="mercado-btn" onclick="window.open('https://grupochama.com.br', '_blank')">Chama Supermercados (Alto da Mooca)<br>Rua do Oratório, 1166</button>
+            <button class="mercado-btn" onclick="window.open('https://grupochama.com.br', '_blank')">Chama Supermercados (Água Rasa)<br>Rua Córrego do Bom Jesus, 407</button>
+            <button class="mercado-btn" onclick="window.open('https://dia.com.br', '_blank')">DIA Supermercado (Rua da Mooca)<br>Rua da Mooca, 4444</button>
+            <button class="mercado-btn" onclick="window.open('https://hirota.com.br', '_blank')">Hirota Food Supermercados (Mooca - Rua do Oratório)<br>Rua do Oratório, 1632</button>
+            <button class="mercado-btn" onclick="window.open('https://hirota.com.br', '_blank')">Hirota Food Supermercados (Água Rasa)<br>Rua Pirassununga, 281</button>
+            <button class="mercado-btn" onclick="window.open('https://joanin.com.br', '_blank')">Joanin Supermercados (Loja 26 - Mooca)<br>Rua dos Trilhos, 1422</button>
+            <button class="mercado-btn" onclick="window.open('https://www.instagram.com/mercado_ipanema_mooca', '_blank')">Mercado Ipanema Mooca (Duque Supermercados)<br>Rua da Mooca, 4287</button>
+            <button class="mercado-btn" onclick="window.open('https://extramercado.com.br', '_blank')">Mini Extra (Rua da Mooca)<br>Rua da Mooca, 3336</button>
+            <button class="mercado-btn" onclick="window.open('https://roldao.com.br', '_blank')">Roldão Atacadista (Mooca)<br>Av. Alcântara Machado, 1010</button>
+            <button class="mercado-btn" onclick="window.open('https://yamauchi.com.br', '_blank')">Supermercado Yamauchi (Parque da Mooca)<br>Rua Juventus, 235</button>
+            <button class="mercado-btn" onclick="window.open('https://xsupermercados.com.br', '_blank')">X Supermercados (Mooca)<br>Rua da Mooca, 3600</button>
+          </div>
+        `;
+      } else if (tipo === 'padarias') {
+        titulo.textContent = 'Padarias Clássicas da Mooca';
+        conteudo.innerHTML = `
+          <div class="lista-estabelecimentos">
+            <p class="section-separator">Padarias Tradicionais</p>
+            <button class="padaria-btn" onclick="window.open('https://padariacarillo.com.br/cardapio/', '_blank')">Padaria Carillo</button>
+            <button class="padaria-btn" onclick="window.open('https://montelibanopaes.com', '_blank')">Panificadora Monte Líbano</button>
+            <button class="padaria-btn" onclick="window.open('https://dicunto.com.br', '_blank')">Di Cunto</button>
+            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/granomooca/', '_blank')">Grano Mooca</button>
+            <button class="padaria-btn" onclick="window.open('https://padariasantabranca.com.br', '_blank')">Padaria Santa Branca</button>
 
-        conteudo.innerHTML = html;
+            <p class="section-separator">Padarias Modernas e Especiais</p>
+            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/panetteria_77/', '_blank')">Panetteria 77</button>
+            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/padariaestoril/', '_blank')">Padaria Estoril</button>
+            <button class="padaria-btn" onclick="window.open('https://www.padariapanrico.com.br/', '_blank')">Padaria Panrico</button>
+            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/padariaromaria/', '_blank')">Padaria Romaria</button>
+
+            <p class="section-separator">Padarias do Alto da Mooca e Região</p>
+            <button class="padaria-btn" onclick="window.open('https://padariaveredas.com.br', '_blank')">Padaria e Confeitaria Veredas<br>Rua Juventus, 638 - Alto da Mooca</button>
+            <button class="padaria-btn" onclick="window.open('https://padariafalcao.shop', '_blank')">Padaria Falcão<br>Rua da Mooca, 4040 — Alto da Mooca (esq. Rua Fernando Falcão)</button>
+            <button class="padaria-btn" onclick="window.open('https://linktr.ee/padaria.vianadocastelo', '_blank')">Padaria Viana do Castelo<br>Rua Itaqueri, 1160 (esq. Rua dos Trilhos)</button>
+          </div>
+        `;
+      } else if (tipo === 'restaurantes') {
+        titulo.textContent = 'Restaurantes da Mooca';
+        conteudo.innerHTML = `
+          <div class="lista-estabelecimentos">
+            <p class="section-separator">Massas e Gastronomia Italiana (Tradição Mooquense)</p>
+            <button class="restaurante-btn" onclick="window.open('https://dicunto.com.br', '_blank')">Di Cunto (Restaurante e Confeitaria)<br>Rua Borges de Figueiredo, 61</button>
+            <button class="restaurante-btn" onclick="window.open('https://www.instagram.com/doncarlinimooca/', '_blank')">Don Carlini<br>Rua Dona Ana Neri, 265</button>
+            <button class="restaurante-btn" onclick="window.open('https://www.restaurantehospedaria.com.br/', '_blank')">Hospedaria (Comida de imigrante)<br>Rua Borges de Figueiredo, 82</button>
+
+            <p class="section-separator">🥩 Churrascarias e Carnes</p>
+            <button class="restaurante-btn" onclick="window.open('https://nocarvao.com.br/', '_blank')">Churrascaria No Carvão<br>Av. Paes de Barros, 2193</button>
+            <button class="restaurante-btn" onclick="window.open('https://esquinadaparrilla.com.br/', '_blank')">Esquina Da Parrilla<br>Rua Guaimbé, 250</button>
+
+            <p class="section-separator">🥗 Self-Service / Buffet (Por Quilo ou Preço Fixo)</p>
+            <button class="restaurante-btn" onclick="window.open('https://cepam.com.br', '_blank')">A Estação (Restaurante no estilo Eataly da CEPAM)<br>Rua da Mooca, 3350</button>
+            <button class="restaurante-btn" onclick="window.open('https://www.facebook.com/restaurantedombosco', '_blank')">Restaurante Dom Bosco<br>Rua Dom Bosco, 483</button>
+            <button class="restaurante-btn" onclick="window.open('https://www.instagram.com/bellamoocaselfservice_/', '_blank')">Bella Mooca Self Service <br>R. Tamarataca, 132 </button>
+
+            <p class="section-separator">🇯🇵 Japonesa e Asiática</p>
+            <button class="restaurante-btn" onclick="window.open('https://temakistation.com.br/', '_blank')">Temaki Station<br>Rua Siqueira Bueno, 2065 </button>
+            <button class="restaurante-btn" onclick="window.open('https://tadashii.com.br', '_blank')">Tadashii Sushi<br>Rua Jaci, 54</button>
+            <button class="restaurante-btn" onclick="window.open('https://www.instagram.com/sushimooca/', '_blank')">Sushi Mooca<br>Rua siqueira bueno 1642</button>
+
+            <p class="section-separator">🥙 Árabe</p>
+            <button class="restaurante-btn" onclick="window.open('https://jaber.com.br', '_blank')">Jaber Especialidades Árabes<br>Rua Paes de Barros, 1146</button>
+
+            <p class="section-separator">🍽️ Especialidades Diversas </p>
+            <button class="restaurante-btn" onclick="window.open('https://www.instagram.com/chicorestaurante_/?hl=pt-br', '_blank')">Chico Restaurante - Mooca(Cozinha Contemporânea)<br>R. Fernando Falcão, 1011</button>
+            <button class="restaurante-btn" onclick="window.open('https://bacalhaudoporto.com.br', '_blank')">Bacalhau do Porto (Portuguesa)<br>Rua do Oratório, 638</button>
+            <button class="restaurante-btn" onclick="window.open('https://www.instagram.com/moocaires/', '_blank')">Moocaires Restobar (Cozinha Argentina)<br>Rua da Mooca, 3420</button>
+
+            <p class="section-separator">🏙️ Restaurantes em Shopping</p>
+            <button class="restaurante-btn" onclick="window.open('https://outback.com.br', '_blank')">Outback Steakhouse (Mooca Plaza Shopping)<br>Rua Cap. Pacheco e Chaves, 313</button>
+            <button class="restaurante-btn" onclick="window.open('https://restauranteamerica.com.br', '_blank')">America (Mooca Plaza Shopping)<br>Rua Cap. Pacheco e Chaves, 313</button>
+          </div>
+        `;
       } else if (tipo === 'wifi') {
         titulo.textContent = 'Wi-Fi Disponíveis na Mooca e Região';
         conteudo.innerHTML = `
@@ -528,7 +651,15 @@
               <p><strong>Endereço:</strong> Rua Padre Adelino, 1.000 - Belenzinho, São Paulo - SP, 03303-000.</p>
               <button class="lazer-btn" onclick="window.open('https://www.sesc.com.br/unidade/sesc-belenzinho/', '_blank')">Site Oficial</button>
             </div>
-            <!-- ... adicione o resto dos itens de lazer que você tinha ... -->
+
+            <p class="section-separator">Parques e Áreas Verdes</p>
+            <div class="lazer-item">
+              <h3>Parque da Mooca (CEE Salim Farah Maluf)</h3>
+              <p>Um grande espaço para a prática de esportes e lazer, conhecido localmente como "Distrital", que oferece atividades gratuitas e áreas de convivência.</p>
+              <p><strong>Endereço:</strong> Rua Taquari, 573 - Mooca, São Paulo - SP.</p>
+              <p>Informações no portal da Prefeitura de SP.</p>
+            </div>
+            <!-- Inclua aqui os outros itens de lazer que você tinha -->
           </div>
           <p style="margin-top:15px; font-size:0.9em; color:#ff9800; text-align:center;">Clique nos pins do mapa para ver cada local. Informações sujeitas a alteração — confirme horários e disponibilidade.</p>
         `;
@@ -552,7 +683,7 @@
             <li><a href="https://www.ojoalheiro.com.br/" target="_blank" class="apoio-link">OJOALHEIRO - Joalheria tradicional da Mooca</a></li>
             <li><a href="http://www.magistermarcas.com.br/" target="_blank" class="apoio-link">MAGISTER - Marcas e Patentes</a></li>
             <li><a href="https://portaldamooca.com.br/" target="_blank" class="apoio-link">PORTAL DA MOOCA - Preservação histórica do bairro da Mooca</a></li>
-            <li><a href="https://www.instagram.com/cameracarinfra/", target="_blank" class="apoio-link">CAMERACAR INFRA - Equipamentos para Filmagem e Eventos</a></li>
+            <li><a href="https://www.instagram.com/cameracarinfra/" target="_blank" class="apoio-link">CAMERACAR INFRA - Equipamentos para Filmagem e Eventos</a></li>
             <li><a href="https://www.termicar.com.br/" target="_blank" class="apoio-link">TERMICAR - Ind. e Com. Auto Peças</a></li>
             <li><a href="https://www.tecmaq.com.br/" target="_blank" class="apoio-link">TECMAQ - Seladoras à Vácuo</a></li>
           </ul>
