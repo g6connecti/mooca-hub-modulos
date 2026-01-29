@@ -1,0 +1,54 @@
+<h2>Lazer na Mooca e Região</h2>
+
+<p>Principais opções de lazer, parques, shoppings, teatros e clubes no bairro e arredores.</p>
+
+<div id="map"></div>
+
+<div class="lista-estabelecimentos">
+  <p class="section-separator">Centros Culturais e Esportivos</p>
+  <div class="lazer-item">
+    <h3>SESC Belenzinho</h3>
+    <p>O SESC Belenzinho é um dos principais centros de lazer da região, oferecendo atividades culturais, esportivas e de bem-estar, incluindo piscinas, teatro, shows, exposições e cursos.</p>
+    <p><strong>Endereço:</strong> Rua Padre Adelino, 1.000 - Belenzinho</p>
+    <button class="lazer-btn" onclick="window.open('https://www.sesc.com.br/unidade/sesc-belenzinho/', '_blank')">Site Oficial</button>
+  </div>
+
+  <p class="section-separator">Parques e Áreas Verdes</p>
+  <div class="lazer-item">
+    <h3>Parque da Mooca (CEE Salim Farah Maluf)</h3>
+    <p>Grande espaço para esportes e lazer, conhecido como "Distrital".</p>
+    <p><strong>Endereço:</strong> Rua Taquari, 573 - Mooca</p>
+  </div>
+
+  <p class="section-separator">Shoppings</p>
+  <div class="lazer-item">
+    <h3>Mooca Plaza Shopping</h3>
+    <p>Shopping com lojas, praça de alimentação, cinemas e serviços.</p>
+    <p><strong>Endereço:</strong> Rua Capitão Pacheco e Chaves, 313 - Vila Prudente</p>
+    <button class="lazer-btn" onclick="window.open('https://www.moocaplaza.com.br/', '_blank')">Site Oficial</button>
+  </div>
+
+  <p class="section-separator">Clubes</p>
+  <div class="lazer-item">
+    <h3>Clube Atlético Juventus</h3>
+    <p>Clube tradicional com natação, academia e eventos.</p>
+    <p><strong>Endereço:</strong> Rua Comendador Roberto Ugolini, 20 - Parque da Mooca</p>
+    <button class="lazer-btn" onclick="window.open('https://www.juventus.com.br/', '_blank')">Site Oficial</button>
+  </div>
+</div>
+
+<button class="close-btn" onclick="fecharModulo()">Fechar</button>
+
+<script>
+  setTimeout(() => {
+    var map = L.map('map').setView([-23.558, -46.595], 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho');
+    L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca');
+    L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping');
+    L.marker([-23.5735, -46.5888]).addTo(map).bindPopup('Clube Atlético Juventus');
+  }, 100);
+</script>
