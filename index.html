@@ -204,7 +204,7 @@
       border-bottom: 1px solid #444;
       padding-bottom: 10px;
     }
-    /* CSS DAS BOLINHAS - REFORÇADO AO MÁXIMO PARA APARECER NO DESKTOP */
+    /* CSS DAS BOLINHAS - REFORÇADO AO MÁXIMO */
     .bolinha {
       display: inline-block !important;
       width: 16px !important;
@@ -212,8 +212,8 @@
       border-radius: 50% !important;
       margin-right: 12px !important;
       vertical-align: middle !important;
-      background: #ffffff !important; /* fallback branco para debug */
-      border: 2px solid #000000 !important; /* borda preta para destacar */
+      background: transparent !important;
+      border: 2px solid #ffffff80 !important; /* borda sutil para contorno */
     }
     .bolinha.ativa {
       background: #00ff00 !important;
@@ -229,13 +229,13 @@
       50% { opacity: 0.4; }
       100% { opacity: 1; }
     }
-    /* Aumento extra no desktop para forçar visibilidade */
+    /* Reforço extra no desktop */
     @media (min-width: 768px) {
       .bolinha {
         width: 20px !important;
         height: 20px !important;
         margin-right: 15px !important;
-        border: 3px solid #000000 !important;
+        border: 2px solid #ffffff !important;
       }
     }
     .apoio-lista {
