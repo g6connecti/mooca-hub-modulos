@@ -204,21 +204,23 @@
       border-bottom: 1px solid #444;
       padding-bottom: 10px;
     }
+    /* CSS das bolinhas - adicionado ou confirmado aqui */
     .bolinha {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      margin-right: 8px;
-      vertical-align: middle;
+      display: inline-block !important;
+      width: 14px !important;
+      height: 14px !important;
+      border-radius: 50% !important;
+      margin-right: 10px !important;
+      vertical-align: middle !important;
+      background: transparent !important; /* fallback */
     }
     .bolinha.ativa {
-      background: #00ff00;
-      box-shadow: 0 0 8px #00ff00;
-      animation: piscar 1.5s infinite;
+      background: #00ff00 !important;
+      box-shadow: 0 0 10px #00ff00 !important;
+      animation: piscar 1.5s infinite !important;
     }
     .bolinha.inativa {
-      background: #ff4444;
+      background: #ff4444 !important;
     }
     @keyframes piscar {
       0% { opacity: 1; }
@@ -346,10 +348,10 @@
         });
     }
 
-    // Função global para inicializar mapas (chamada após carregar módulo)
+    // Função global para inicializar mapas
     function initMap() {
       const mapElement = document.getElementById('map');
-      if (!mapElement || mapElement._leaflet_id) return; // Já inicializado ou não existe
+      if (!mapElement || mapElement._leaflet_id) return;
 
       const map = L.map('map').setView([-23.558, -46.595], 14);
 
@@ -398,7 +400,6 @@
 
           if (modulo === 'tempo') fetchWeather();
 
-          // Inicializa mapa se o módulo tiver #map
           setTimeout(initMap, 300);
 
           conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -412,7 +413,7 @@
       });
     });
 
-    // Listener para sub-categorias (dentro de módulos carregados dinamicamente)
+    // Listener para sub-categorias em estabelecimentos
     document.body.addEventListener('click', async function(e) {
       const subCard = e.target.closest('.estabelecimento-card[data-submodulo]');
       if (subCard) {
@@ -433,7 +434,6 @@
           const html = await response.text();
           conteudo.innerHTML = html;
 
-          // Inicializa mapa se o sub-módulo tiver #map
           setTimeout(initMap, 300);
 
           conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -449,4 +449,3 @@
   </script>
 </body>
 </html>
-
