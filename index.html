@@ -204,7 +204,7 @@
       border-bottom: 1px solid #444;
       padding-bottom: 10px;
     }
-    /* CSS DAS BOLINHAS - REFORÇADO COM !IMPORTANT PARA GARANTIR VISIBILIDADE */
+    /* CSS DAS BOLINHAS - REFORÇADO AO MÁXIMO COM !IMPORTANT */
     .bolinha {
       display: inline-block !important;
       width: 16px !important;
@@ -212,7 +212,8 @@
       border-radius: 50% !important;
       margin-right: 12px !important;
       vertical-align: middle !important;
-      background: transparent !important; /* fallback */
+      background: transparent !important;
+      border: 1px solid #ffffff !important; /* borda branca para destacar no desktop */
     }
     .bolinha.ativa {
       background: #00ff00 !important;
@@ -221,11 +222,20 @@
     }
     .bolinha.inativa {
       background: #ff4444 !important;
+      box-shadow: 0 0 8px #ff4444 !important;
     }
     @keyframes piscar {
       0% { opacity: 1; }
       50% { opacity: 0.4; }
       100% { opacity: 1; }
+    }
+    /* Aumento de tamanho no desktop para garantir visibilidade */
+    @media (min-width: 768px) {
+      .bolinha {
+        width: 20px !important;
+        height: 20px !important;
+        margin-right: 15px !important;
+      }
     }
     .apoio-lista {
       list-style-type: disc;
