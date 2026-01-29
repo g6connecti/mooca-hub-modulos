@@ -113,10 +113,16 @@
     return dias[hoje];
   }
 
-  document.getElementById('dia-atual').textContent = getDiaSemana();
-
-  // Aplica classes dinâmicas para bolinhas baseadas no dia atual
   const diaAtual = getDiaSemana();
+  document.getElementById('dia-atual').textContent = diaAtual;
+
+  // Limpa classes antigas e aplica as corretas para todas as bolinhas
+  const bolinhas = document.querySelectorAll('.bolinha');
+  bolinhas.forEach(bolinha => {
+    bolinha.classList.remove('ativa', 'inativa'); // Limpa qualquer classe anterior
+  });
+
+  // Aplica ativa (verde piscante) só nas linhas do dia atual
   const linhas = document.querySelectorAll('tbody tr');
   linhas.forEach(linha => {
     const diaLinha = linha.getAttribute('data-dia');
