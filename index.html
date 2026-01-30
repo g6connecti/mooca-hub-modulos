@@ -120,7 +120,7 @@
       box-shadow: 0 0 20px #00ff00;
     }
     .sugestao-email {
-      color: #81d4fa;
+      color: #81d4fa; /* azul claro */
       font-weight: bold;
       text-decoration: none;
     }
@@ -211,15 +211,15 @@
     }
     .bolinha {
       display: inline-block;
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      margin-right: 10px;
+      margin-left: 8px;
       vertical-align: middle;
     }
     .bolinha.ativa {
       background: #00ff00;
-      box-shadow: 0 0 10px #00ff00;
+      box-shadow: 0 0 8px #00ff00;
       animation: piscar 1.5s infinite;
     }
     .bolinha.inativa {
@@ -266,23 +266,6 @@
     .lazer-item p {
       margin: 5px 0;
       font-size: 0.95em;
-    }
-    .promo-tag {
-      background: #ff9800;
-      color: #121212;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 0.78em;
-      font-weight: bold;
-      margin-left: 10px;
-      vertical-align: middle;
-      box-shadow: 0 1px 6px rgba(255, 152, 0, 0.5);
-      display: inline-block;
-    }
-    .padaria-btn:hover .promo-tag {
-      background: #ffb74d;
-      transform: scale(1.05);
-      transition: all 0.2s ease;
     }
   </style>
 </head>
@@ -560,12 +543,13 @@
           { dia: 'Sábado', nome: 'Feira Mooca (Tabajaras)', endereco: 'Rua Tabajaras, entre 227 e 366' },
           { dia: 'Sábado', nome: 'Feira Serra de Jairé', endereco: 'Rua Serra de Jairé, entre 760 e 908' },
           { dia: 'Domingo', nome: 'Feira Mooca Moderna (Bresser)', endereco: 'Rua Bresser, nº 2701' },
+          { dia: 'Domingo', nome: 'Feira Teresina', endereco: 'Rua Teresina' }
         ];
 
         feiras.forEach(feira => {
           const isHoje = feira.dia.includes(diaHoje);
           const classeBolinha = isHoje ? 'bolinha ativa' : 'bolinha inativa';
-          html += `<tr><td><span class="${classeBolinha}"></span> ${feira.dia}</td><td>${feira.nome}</td><td>${feira.endereco}</td></tr>`;
+          html += `<tr><td>${feira.dia} <span class="${classeBolinha}"></span></td><td>${feira.nome}</td><td>${feira.endereco}</td></tr>`;
         });
 
         html += '</tbody></table></div>';
@@ -589,6 +573,29 @@
             <button class="hamburguer-btn" onclick="window.open('https://standardburgeroficial.com.br', '_blank')">Standard Burger<br>Rua Sebastião Preto, 43</button>
           </div>
         `;
+      } else if (tipo === 'padarias') {
+        titulo.textContent = 'Padarias Clássicas da Mooca';
+        conteudo.innerHTML = `
+          <div class="lista-estabelecimentos">
+            <p class="section-separator">Padarias Tradicionais</p>
+            <button class="padaria-btn" onclick="window.open('https://padariacarillo.com.br/cardapio/', '_blank')">Padaria Carillo</button>
+            <button class="padaria-btn" onclick="window.open('https://montelibanopaes.com', '_blank')">Panificadora Monte Líbano</button>
+            <button class="padaria-btn" onclick="window.open('https://dicunto.com.br', '_blank')">Di Cunto</button>
+            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/granomooca/', '_blank')">Grano Mooca</button>
+            <button class="padaria-btn" onclick="window.open('https://padariasantabranca.com.br', '_blank')">Padaria Santa Branca</button>
+
+            <p class="section-separator">Padarias Modernas e Especiais</p>
+            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/panetteria_77/', '_blank')">Panetteria 77</button>
+            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/padariaestoril/', '_blank')">Padaria Estoril</button>
+            <button class="padaria-btn" onclick="window.open('https://www.padariapanrico.com.br/', '_blank')">Padaria Panrico</button>
+            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/padariaromaria/', '_blank')">Padaria Romaria</button>
+
+            <p class="section-separator">Padarias do Alto da Mooca e Região</p>
+            <button class="padaria-btn" onclick="window.open('https://padariaveredas.com.br', '_blank')">Padaria e Confeitaria Veredas<br>Rua Juventus, 638 - Alto da Mooca</button>
+            <button class="padaria-btn" onclick="window.open('https://padariafalcao.shop', '_blank')">Padaria Falcão<br>Rua da Mooca, 4040 — Alto da Mooca (esq. Rua Fernando Falcão)</button>
+            <button class="padaria-btn" onclick="window.open('https://linktr.ee/padaria.vianadocastelo', '_blank')">Padaria Viana do Castelo<br>Rua Itaqueri, 1160 (esq. Rua dos Trilhos)</button>
+          </div>
+        `;
       } else if (tipo === 'mercados') {
         titulo.textContent = 'Mercados e Supermercados da Mooca';
         conteudo.innerHTML = `
@@ -607,70 +614,6 @@
             <button class="mercado-btn" onclick="window.open('https://yamauchi.com.br', '_blank')">Supermercado Yamauchi (Parque da Mooca)<br>Rua Juventus, 235</button>
             <button class="mercado-btn" onclick="window.open('https://xsupermercados.com.br', '_blank')">X Supermercados (Mooca)<br>Rua da Mooca, 3600</button>
           </div>
-        `;
-      } else if (tipo === 'padarias') {
-        titulo.textContent = 'Padarias Clássicas da Mooca';
-        conteudo.innerHTML = `
-          <div class="lista-estabelecimentos">
-            <p class="section-separator">Padarias Tradicionais</p>
-            
-            <button class="padaria-btn" onclick="window.open('https://padariacarillo.com.br/cardapio/', '_blank')">
-              Padaria Carillo <span class="promo-tag">Promoção</span>
-            </button>
-            
-            <button class="padaria-btn" onclick="window.open('https://montelibanopaes.com', '_blank')">
-              Panificadora Monte Líbano
-            </button>
-            
-            <button class="padaria-btn" onclick="window.open('https://dicunto.com.br', '_blank')">
-              Di Cunto
-            </button>
-            
-            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/granomooca/', '_blank')">
-              Grano Mooca
-            </button>
-            
-            <button class="padaria-btn" onclick="window.open('https://padariasantabranca.com.br', '_blank')">
-              Padaria Santa Branca <span class="promo-tag">Promoção</span>
-            </button>
-
-            <p class="section-separator">Padarias Modernas e Especiais</p>
-            
-            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/panetteria_77/', '_blank')">
-              Panetteria 77
-            </button>
-            
-            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/padariaestoril/', '_blank')">
-              Padaria Estoril
-            </button>
-            
-            <button class="padaria-btn" onclick="window.open('https://www.padariapanrico.com.br/', '_blank')">
-              Padaria Panrico
-            </button>
-            
-            <button class="padaria-btn" onclick="window.open('https://www.instagram.com/padariaromaria/', '_blank')">
-              Padaria Romaria
-            </button>
-
-            <p class="section-separator">Padarias do Alto da Mooca e Região</p>
-            
-            <button class="padaria-btn" onclick="window.open('https://padariaveredas.com.br', '_blank')">
-              Padaria e Confeitaria Veredas<br>Rua Juventus, 638 - Alto da Mooca
-            </button>
-            
-            <button class="padaria-btn" onclick="window.open('https://padariafalcao.shop', '_blank')">
-              Padaria Falcão<br>Rua da Mooca, 4040 — Alto da Mooca (esq. Rua Fernando Falcão)
-            </button>
-            
-            <button class="padaria-btn" onclick="window.open('https://linktr.ee/padaria.vianadocastelo', '_blank')">
-              Padaria Viana do Castelo<br>Rua Itaqueri, 1160 (esq. Rua dos Trilhos)
-            </button>
-          </div>
-
-          <p style="margin-top:25px; font-size:0.9em; text-align:center; color:#ff9800;">
-            <strong>Dica:</strong> As promoções podem variar — confirme no local ou nas redes sociais.<br>
-            Bom café e pão quentinho para você! 🥐☕
-          </p>
         `;
       } else if (tipo === 'restaurantes') {
         titulo.textContent = 'Restaurantes da Mooca';
@@ -713,7 +656,7 @@
         conteudo.innerHTML = `
           <p>Pontos de Wi-Fi gratuito (WiFi Livre SP e outros). Clique nos pins para detalhes.</p>
           <div id="map"></div>
-          <p style="margin-top:15px; font-size:0.9em; color:#ff9800;">Fonte: Prefeitura SP. Conecte-se à rede "WiFi Livre SP". Informações sujeitas a alteração.</p>
+          <p style="margin-top:15px; font-size:0.9em; color:#ff9800;">Fonte: Prefeitura SP. Conecte-se à rede "WiFi Livre SP". Informações sujeitas a alterações.</p>
           <button class="noticias-btn" onclick="window.open('https://prefeitura.sp.gov.br/web/inovacao/w/inclusao_digital/152219', '_blank')">Mapa Completo WiFi Livre SP</button>
         `;
         setTimeout(() => {
@@ -722,94 +665,120 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           }).addTo(map);
 
+          // Pins com coordenadas aproximadas
           L.marker([-23.562, -46.592]).addTo(map).bindPopup('Praça Ciro Pontes - Mooca<br>WiFi Livre SP');
           L.marker([-23.548, -46.588]).addTo(map).bindPopup('Praça General Humberto de Sousa Mello - Belém<br>WiFi Livre SP');
           L.marker([-23.545, -46.608]).addTo(map).bindPopup('Largo da Concórdia - Brás<br>WiFi Livre SP');
           L.marker([-23.560, -46.579]).addTo(map).bindPopup('Praça São Luis do Curu - Água Rasa<br>WiFi Livre SP');
           L.marker([-23.539, -46.610]).addTo(map).bindPopup('Praça Kantuta - Pari<br>WiFi Livre SP');
           L.marker([-23.540, -46.583]).addTo(map).bindPopup('Praça Silvio Romero - Tatuapé<br>WiFi Livre SP');
-        }, 300);
+        }, 100);
       } else if (tipo === 'lazer') {
         titulo.textContent = 'Lazer na Mooca e Região';
-        fetch('lazer.html')
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Erro ao carregar lazer.html: ' + response.statusText);
-            }
-            return response.text();
-          })
-          .then(html => {
-            conteudo.innerHTML = html;
+        conteudo.innerHTML = `
+          <p>Principais opções de lazer, parques, shoppings, teatros e clubes no bairro e arredores.</p>
+          <div id="map"></div>
+          <div class="lista-estabelecimentos">
+            <p class="section-separator">Centros Culturais e Esportivos</p>
+            <div class="lazer-item">
+              <h3>SESC Belenzinho</h3>
+              <p>O SESC Belenzinho é um dos principais centros de lazer da região, oferecendo uma vasta gama de atividades culturais, esportivas e de bem-estar, incluindo piscinas, teatro, shows, exposições e cursos.</p>
+              <p><strong>Endereço:</strong> Rua Padre Adelino, 1.000 - Belenzinho, São Paulo - SP, 03303-000.</p>
+              <button class="lazer-btn" onclick="window.open('https://www.sesc.com.br/unidade/sesc-belenzinho/', '_blank')">Site Oficial</button>
+            </div>
 
-            // Executa o script do mapa dinamicamente após inserir o HTML
-            setTimeout(() => {
-              const script = document.createElement('script');
-              script.textContent = `
-                const mapContainer = document.getElementById('lazer-map');
-                if (!mapContainer) {
-                  console.error('Elemento #lazer-map não encontrado no DOM.');
-                  return;
-                }
-                if (typeof L === 'undefined') {
-                  console.error('Leaflet (L) não está definido. Verifique o script no <head> do index.html.');
-                  return;
-                }
+            <p class="section-separator">Parques e Áreas Verdes</p>
+            <div class="lazer-item">
+              <h3>Parque da Mooca (CEE Salim Farah Maluf)</h3>
+              <p>Um grande espaço para a prática de esportes e lazer, conhecido localmente como "Distrital", que oferece atividades gratuitas e áreas de convivência.</p>
+              <p><strong>Endereço:</strong> Rua Taquari, 573 - Mooca, São Paulo - SP.</p>
+              <p>Informações no portal da Prefeitura de SP.</p>
+            </div>
+            <div class="lazer-item">
+              <h3>Parque Sabesp Mooca Radialista Fiori Gigliotti</h3>
+              <p>Uma opção de lazer com áreas verdes para caminhada e momentos de relaxamento.</p>
+              <p><strong>Endereço:</strong> Avenida Paes de Barros, 2107 - Alto da Mooca, São Paulo - SP.</p>
+              <p>Informações em guias locais.</p>
+            </div>
 
-                // Limpa instância antiga se existir
-                if (mapContainer._leaflet_map) {
-                  mapContainer._leaflet_map.remove();
-                }
+            <p class="section-separator">Shoppings Centers</p>
+            <div class="lazer-item">
+              <h3>Mooca Plaza Shopping</h3>
+              <p>Um shopping center completo com diversas lojas, praça de alimentação, cinemas e serviços, sendo um ponto de encontro popular na região.</p>
+              <p><strong>Endereço:</strong> Rua Capitão Pacheco e Chaves, 313 - Vila Prudente, São Paulo - SP, 03126-000.</p>
+              <button class="lazer-btn" onclick="window.open('https://www.moocaplaza.com.br/', '_blank')">Site Oficial</button>
+            </div>
 
-                try {
-                  const map = L.map('lazer-map').setView([-23.558, -46.595], 14);
-                  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  }).addTo(map);
+            <p class="section-separator">Teatros e Espaços Culturais</p>
+            <div class="lazer-item">
+              <h3>Museu da Imigração do Estado de São Paulo</h3>
+              <p>Embora não seja um teatro, é um importante ponto cultural na região do Belenzinho/Mooca, ideal para quem gosta de história e arquitetura.</p>
+              <p><strong>Endereço:</strong> Rua Visconde de Parnaíba, 1316 - Mooca, São Paulo - SP.</p>
+              <button class="lazer-btn" onclick="window.open('https://museudaimigracao.org.br/', '_blank')">Site Oficial</button>
+            </div>
+            <div class="lazer-item">
+              <h3>Lilith Comedy Club</h3>
+              <p>Um espaço dedicado a apresentações de stand-up comedy, próximo ao Shopping Mooca.</p>
+              <p><strong>Endereço:</strong> Rua Capitão Pacheco e Chaves, 981 - Vila Prudente, São Paulo - SP, 03126-001.</p>
+            </div>
 
-                  // Adiciona todos os pins aqui
-                  L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho<br>Rua Padre Adelino, 1.000');
-                  L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)<br>Rua Taquari, 573');
-                  L.marker([-23.5585, -46.5900]).addTo(map).bindPopup('Parque Sabesp Mooca<br>Av. Paes de Barros, 2107');
-                  L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping<br>Rua Capitão Pacheco e Chaves, 313');
-                  L.marker([-23.5450, -46.5950]).addTo(map).bindPopup('Museu da Imigração<br>Rua Visconde de Parnaíba, 1316');
-                  L.marker([-23.5680, -46.6000]).addTo(map).bindPopup('Lilith Comedy Club<br>Rua Capitão Pacheco e Chaves, 981');
-                  L.marker([-23.5625, -46.5925]).addTo(map).bindPopup('Clube Atlético Juventus<br>Rua Comendador Roberto Ugolini, 20');
-                  L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Clube Escola da Mooca<br>Rua Taquari, 635');
-                  L.marker([-23.5550, -46.5850]).addTo(map).bindPopup('Clube Atlético Parque da Mooca<br>Rua Padre Raposo, 837');
-                  L.marker([-23.5750, -46.6050]).addTo(map).bindPopup('Leão do Norte Futebol Clube<br>Rua Passarola, 85');
+            <p class="section-separator">Clubes</p>
+            <div class="lazer-item">
+              <h3>Clube Atlético Juventus</h3>
+              <p>Um clube tradicional com uma vasta gama de atividades esportivas e sociais, incluindo natação, academia e eventos sociais.</p>
+              <p><strong>Endereço:</strong> Rua Comendador Roberto Ugolini, 20 - Parque da Mooca, São Paulo - SP, 03125-010.</p>
+              <button class="lazer-btn" onclick="window.open('https://www.juventus.com.br/', '_blank')">Site Oficial</button>
+            </div>
+            <div class="lazer-item">
+              <h3>Clube Escola da Mooca (CEE Salim Farah Maluf)</h3>
+              <p>Oferece atividades esportivas e de lazer gratuitas, com instalações que incluem piscinas e quadras, sendo um espaço público de convivência para a comunidade.</p>
+              <p><strong>Endereço:</strong> Rua Taquari, 635 - Mooca, São Paulo - SP, 03166-000.</p>
+              <p>Informações no portal da Prefeitura de São Paulo.</p>
+            </div>
+            <div class="lazer-item">
+              <h3>Clube Atlético Parque da Mooca</h3>
+              <p>Um clube social e esportivo com uma longa história, oferecendo espaços para a prática de esportes, como quadras de futebol.</p>
+              <p><strong>Endereço:</strong> Rua Padre Raposo, 837 - Alto da Mooca, São Paulo - SP, 03118-001.</p>
+              <button class="lazer-btn" onclick="window.open('https://www.jogaojogo.com.br/quadra/c-a-parque-da-mooca', '_blank')">Mais Informações</button>
+            </div>
+            <div class="lazer-item">
+              <h3>Leão do Norte Futebol Clube</h3>
+              <p>Clube com tradição desde 1935, conhecido por suas atividades esportivas amadoras e espaços para eventos.</p>
+              <p><strong>Endereço:</strong> Rua Passarola, 85 - Quarta Parada (próximo à Mooca), São Paulo - SP, 03178-210.</p>
+              <p>Páginas em redes sociais como @leaodonorte.fc no Instagram.</p>
+            </div>
+          </div>
+          <p style="margin-top:15px; font-size:0.9em; color:#ff9800; text-align:center;">Clique nos pins do mapa para ver cada local. Informações sujeitas a alteração — confirme horários e disponibilidade.</p>
+        `;
+        setTimeout(() => {
+          var map = L.map('map').setView([-23.558, -46.595], 14);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
 
-                  // Pins extras para 3ª idade (aproximados)
-                  L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('CDI Mooca<br>Rua dos Campineiros, 513');
-                  L.marker([-23.5500, -46.5900]).addTo(map).bindPopup('Yoga Mooca<br>Rua Rivadávia Correia, 84');
-                  L.marker([-23.5600, -46.5950]).addTo(map).bindPopup('Bella Mooca Residencial<br>Rua João Antônio de Oliveira, 915');
-                  L.marker([-23.5580, -46.5930]).addTo(map).bindPopup('Terça da Serra Mooca<br>Rua Dom Joaquim de Melo, 319');
-                  L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Universidade São Judas Tadeu<br>Rua Taquari, 546');
-                  L.marker([-23.5630, -46.5940]).addTo(map).bindPopup('Anhembi Morumbi Campus Mooca<br>Rua Dr. Almeida Lima, 1134');
-
-                  console.log('Mapa e pins carregados com sucesso!');
-                } catch (err) {
-                  console.error('Erro ao criar o mapa:', err);
-                }
-              `;
-              document.body.appendChild(script);
-            }, 600); // Delay para garantir que o DOM atualizou
-          })
-          .catch(err => {
-            conteudo.innerHTML = '<p style="color:#ff4444;">Erro ao carregar o módulo Lazer. Verifique se o arquivo lazer.html existe na mesma pasta.</p>';
-            console.error('Erro fetch:', err);
-          });
+          L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho');
+          L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)');
+          L.marker([-23.5580, -46.5950]).addTo(map).bindPopup('Parque Sabesp Mooca Radialista Fiori Gigliotti');
+          L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping');
+          L.marker([-23.5492, -46.6128]).addTo(map).bindPopup('Museu da Imigração do Estado de São Paulo');
+          L.marker([-23.5705, -46.6025]).addTo(map).bindPopup('Lilith Comedy Club');
+          L.marker([-23.5735, -46.5888]).addTo(map).bindPopup('Clube Atlético Juventus');
+          L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Clube Escola da Mooca (CEE Salim Farah Maluf)');
+          L.marker([-23.5650, -46.5900]).addTo(map).bindPopup('Clube Atlético Parque da Mooca');
+          L.marker([-23.5750, -46.5800]).addTo(map).bindPopup('Leão do Norte Futebol Clube');
+        }, 100);
       } else if (tipo === 'patrocinadores') {
         titulo.textContent = 'Nossos Apoiadores';
         conteudo.innerHTML = `
           <ul class="apoio-lista">
             <li><a href="https://www.abadeadvogados.com.br/" target="_blank" class="apoio-link">ABAD ADV - Escritório de Advocacia</a></li>
-            <li><a href="https://www.roselis.com.br/" target="_blank" class="apoio-link">FARMÁCIA ROSELIS - Farmácia de Manipulação</a></li>
-            <li><a href="https://www.ojoalheiro.com.br/" target="_blank" class="apoio-link">OJOALHEIRO - Joalheria tradicional da Mooca</a></li>
-            <li><a href="http://www.magistermarcas.com.br/" target="_blank" class="apoio-link">MAGISTER - Marcas e Patentes</a></li>
-            <li><a href="https://portaldamooca.com.br/" target="_blank" class="apoio-link">PORTAL DA MOOCA - Preservação histórica do bairro da Mooca</a></li>
-            <li><a href="https://www.instagram.com/cameracarinfra/", target="_blank" class="apoio-link">CAMERACAR INFRA - Equipamentos para Filmagem e Eventos</a></li>
-            <li><a href="https://www.termicar.com.br/" target="_blank" class="apoio-link">TERMICAR - Ind. e Com. Auto Peças</a></li>
-            <li><a href="https://www.tecmaq.com.br/" target="_blank" class="apoio-link">TECMAQ - Seladoras à Vácuo</a></li>
+            <li><a href="https://www.roselis.com.br/" target="_blank" class="apoio-link">Farmácia Roselis - Farmácia de Manipulação</a></li>
+            <li><a href="https://www.ojoalheiro.com.br/" target="_blank" class="apoio-link">Joalheria Carnevale - Joalheria tradicional da Mooca</a></li>
+            <li><a href="http://www.magistermarcas.com.br/" target="_blank" class="apoio-link">Magister - Marcas e Patentes</a></li>
+            <li><a href="https://portaldamooca.com.br/" target="_blank" class="apoio-link">Portal da Mooca - Preservação histórica do bairro da Mooca</a></li>
+            <li><a href="https://www.cameracar.com.br/" target="_blank" class="apoio-link">Cameracar Infra - Equipamentos para Filmagem e Eventos</a></li>
+            <li><a href="https://www.termicar.com.br/" target="_blank" class="apoio-link">Termicar - Ind. e Com. Auto Peças</a></li>
+            <li><a href="https://www.tecmaq.com.br/" target="_blank" class="apoio-link">Tecmaq - Seladoras à Vácuo</a></li>
           </ul>
           <p style="margin-top:20px; font-size:0.9em; text-align:center; color:#00ffff;">Apoie quem apoia a Mooca! 🤝</p>
         `;
