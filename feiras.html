@@ -1,10 +1,8 @@
-<h2>Feiras Livres na Mooca</h2>
-
 <p style="text-align:center; margin-bottom:20px; font-size:1.1em; color:#00ffff;">
-  Confira as feiras livres do bairro. A bolinha verde piscante indica as feiras de hoje!
+  Feiras Livres na Mooca e arredores – dias e locais
 </p>
 
-<div class="overflow-x">
+<div class="lista-estabelecimentos overflow-x">
   <table>
     <thead>
       <tr>
@@ -14,83 +12,84 @@
       </tr>
     </thead>
     <tbody>
-      <tr data-dia="Terça-feira">
-        <td><span class="bolinha"></span> Terça-feira</td>
+      <!-- As bolinhas são geradas dinamicamente via JS no index.html -->
+      <tr>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Moraes Barros</td>
         <td>Rua Firmiano Pinto</td>
       </tr>
-      <tr data-dia="Terça-feira">
-        <td><span class="bolinha"></span> Terça-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Parque da Mooca</td>
         <td>Rua Conde de Prates</td>
       </tr>
-      <tr data-dia="Terça-feira">
-        <td><span class="bolinha"></span> Terça-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Décio Abrahão</td>
         <td>Rua Décio Ábramo, nº 412</td>
       </tr>
-      <tr data-dia="Terça-feira">
-        <td><span class="bolinha"></span> Terça-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Pires de Campos</td>
         <td>Rua Pires de Campos</td>
       </tr>
-      <tr data-dia="Terça-feira">
-        <td><span class="bolinha"></span> Terça-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Dom Bosco</td>
         <td>Rua Dom Bosco</td>
       </tr>
-      <tr data-dia="Quarta-feira">
-        <td><span class="bolinha"></span> Quarta-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Quarta-feira</td>
         <td>Feira Madre de Deus</td>
         <td>Rua Madre de Deus, nº 604</td>
       </tr>
-      <tr data-dia="Quarta-feira">
-        <td><span class="bolinha"></span> Quarta-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Quarta-feira</td>
         <td>Feira Mooca Moderna</td>
         <td>Rua dos Trilhos, nº 869</td>
       </tr>
-      <tr data-dia="Quinta-feira">
-        <td><span class="bolinha"></span> Quinta-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Quinta-feira</td>
         <td>Feira Alto da Mooca</td>
         <td>Rua Itanhaém</td>
       </tr>
-      <tr data-dia="Quinta-feira">
-        <td><span class="bolinha"></span> Quinta-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Quinta-feira</td>
         <td>Feira Vila Oratório</td>
         <td>Rua Silva Coutinho, S/N</td>
       </tr>
-      <tr data-dia="Quinta-feira">
-        <td><span class="bolinha"></span> Quinta-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Quinta-feira</td>
         <td>Feira Mãe do Céu</td>
         <td>Rua Visconde de Itaboraí, nº 233</td>
       </tr>
-      <tr data-dia="Quinta-feira">
-        <td><span class="bolinha"></span> Quinta-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Quinta-feira</td>
         <td>Feira Machado Tolosa</td>
         <td>Rua Machado Tolosa</td>
       </tr>
-      <tr data-dia="Sexta-feira">
-        <td><span class="bolinha"></span> Sexta-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Sexta-feira</td>
         <td>Feira Jaibarás</td>
         <td>Rua Jaibarás</td>
       </tr>
-      <tr data-dia="Sexta-feira">
-        <td><span class="bolinha"></span> Sexta-feira</td>
+      <tr>
+        <td><span class="bolinha"></span>Sexta-feira</td>
         <td>Feira Bom Jesus</td>
         <td>Rua Bom Jesus</td>
       </tr>
-      <tr data-dia="Sábado">
-        <td><span class="bolinha"></span> Sábado</td>
+      <tr>
+        <td><span class="bolinha"></span>Sábado</td>
         <td>Feira Mooca (Tabajaras)</td>
         <td>Rua Tabajaras, entre 227 e 366</td>
       </tr>
-      <tr data-dia="Sábado">
-        <td><span class="bolinha"></span> Sábado</td>
+      <tr>
+        <td><span class="bolinha"></span>Sábado</td>
         <td>Feira Serra de Jairé</td>
         <td>Rua Serra de Jairé, entre 760 e 908</td>
       </tr>
-      <tr data-dia="Domingo">
-        <td><span class="bolinha"></span> Domingo</td>
+      <tr>
+        <td><span class="bolinha"></span>Domingo</td>
         <td>Feira Mooca Moderna (Bresser)</td>
         <td>Rua Bresser, nº 2701</td>
       </tr>
@@ -98,56 +97,13 @@
   </table>
 </div>
 
-<p style="margin-top:25px; font-size:0.9em; text-align:center; color:#ff9800;">
+<p style="margin-top:15px; font-size:0.9em; text-align:center; color:#00ffff;">
   Horários geralmente das 7h às 13h — confirme no local ou com a prefeitura.<br>
   <strong>Hoje é <span id="dia-atual"></span>!</strong>
 </p>
 
-<button class="close-btn" onclick="fecharModulo()">Fechar</button>
-
+<!-- O JS abaixo é executado no index.html após carregar o HTML -->
 <script>
-  // Delay para esperar o DOM do index injetar o conteúdo
-  setTimeout(function() {
-    // Função para obter o dia da semana atual
-    function getDiaSemana() {
-      const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-      const hoje = new Date().getDay();
-      return dias[hoje];
-    }
-
-    const diaAtual = getDiaSemana();
-    const diaAtualElement = document.getElementById('dia-atual');
-    if (diaAtualElement) {
-      diaAtualElement.textContent = diaAtual;
-      console.log('Dia atual detectado:', diaAtual);
-    } else {
-      console.log('Elemento #dia-atual não encontrado');
-    }
-
-    // Limpa classes antigas
-    const bolinhas = document.querySelectorAll('.bolinha');
-    console.log('Número de bolinhas encontradas:', bolinhas.length); // deve ser 16
-
-    bolinhas.forEach(bolinha => {
-      bolinha.classList.remove('ativa', 'inativa');
-    });
-
-    // Aplica classes corretas
-    const linhas = document.querySelectorAll('tbody tr');
-    linhas.forEach((linha, index) => {
-      const diaLinha = linha.getAttribute('data-dia');
-      const bolinha = linha.querySelector('.bolinha');
-      if (bolinha) {
-        if (diaLinha === diaAtual) {
-          bolinha.classList.add('ativa');
-          console.log(`Linha ${index + 1} (${diaLinha}): ATIVA (verde piscante)`);
-        } else {
-          bolinha.classList.add('inativa');
-          console.log(`Linha ${index + 1} (${diaLinha}): inativa (vermelha)`);
-        }
-      } else {
-        console.log(`Linha ${index + 1} sem bolinha encontrada`);
-      }
-    });
-  }, 800); // Delay de 800ms para garantir DOM atualizado
+  // Preenche o dia atual no texto final (opcional, mas melhora a UX)
+  document.getElementById('dia-atual').textContent = getDiaSemana();
 </script>
