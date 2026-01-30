@@ -11,8 +11,87 @@
         <th>Endereço</th>
       </tr>
     </thead>
-    <tbody id="tabela-feiras">
-      <!-- As linhas da tabela serão inseridas aqui pelo JavaScript do index.html -->
+    <tbody>
+      <tr>
+        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td>Feira Moraes Barros</td>
+        <td>Rua Firmiano Pinto</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td>Feira Parque da Mooca</td>
+        <td>Rua Conde de Prates</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td>Feira Décio Abrahão</td>
+        <td>Rua Décio Ábramo, nº 412</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td>Feira Pires de Campos</td>
+        <td>Rua Pires de Campos</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td>Feira Dom Bosco</td>
+        <td>Rua Dom Bosco</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Quarta-feira</td>
+        <td>Feira Madre de Deus</td>
+        <td>Rua Madre de Deus, nº 604</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Quarta-feira</td>
+        <td>Feira Mooca Moderna</td>
+        <td>Rua dos Trilhos, nº 869</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Quinta-feira</td>
+        <td>Feira Alto da Mooca</td>
+        <td>Rua Itanhaém</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Quinta-feira</td>
+        <td>Feira Vila Oratório</td>
+        <td>Rua Silva Coutinho, S/N</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Quinta-feira</td>
+        <td>Feira Mãe do Céu</td>
+        <td>Rua Visconde de Itaboraí, nº 233</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Quinta-feira</td>
+        <td>Feira Machado Tolosa</td>
+        <td>Rua Machado Tolosa</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Sexta-feira</td>
+        <td>Feira Jaibarás</td>
+        <td>Rua Jaibarás</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Sexta-feira</td>
+        <td>Feira Bom Jesus</td>
+        <td>Rua Bom Jesus</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Sábado</td>
+        <td>Feira Mooca (Tabajaras)</td>
+        <td>Rua Tabajaras, entre 227 e 366</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Sábado</td>
+        <td>Feira Serra de Jairé</td>
+        <td>Rua Serra de Jairé, entre 760 e 908</td>
+      </tr>
+      <tr>
+        <td><span class="bolinha"></span>Domingo</td>
+        <td>Feira Mooca Moderna (Bresser)</td>
+        <td>Rua Bresser, nº 2701</td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -22,52 +101,24 @@
   <strong>Hoje é <span id="dia-atual"></span>!</strong>
 </p>
 
-<!-- Botão Fechar no final do módulo -->
+<!-- Botão Fechar -->
 <button class="close-btn" onclick="fecharModulo()">Fechar</button>
 
 <script>
-  // Esse script roda após o HTML ser inserido no DOM
+  // Atualiza o texto "Hoje é ..." automaticamente
   document.addEventListener('DOMContentLoaded', function() {
-    const diaHoje = getDiaSemana(); // Função já existe no index.html
-
-    // Lista completa de feiras (você pode editar se quiser adicionar/remover)
-    const feiras = [
-      { dia: 'Terça-feira', nome: 'Feira Moraes Barros', endereco: 'Rua Firmiano Pinto' },
-      { dia: 'Terça-feira', nome: 'Feira Parque da Mooca', endereco: 'Rua Conde de Prates' },
-      { dia: 'Terça-feira', nome: 'Feira Décio Abrahão', endereco: 'Rua Décio Ábramo, nº 412' },
-      { dia: 'Terça-feira', nome: 'Feira Pires de Campos', endereco: 'Rua Pires de Campos' },
-      { dia: 'Terça-feira', nome: 'Feira Dom Bosco', endereco: 'Rua Dom Bosco' },
-      { dia: 'Quarta-feira', nome: 'Feira Madre de Deus', endereco: 'Rua Madre de Deus, nº 604' },
-      { dia: 'Quarta-feira', nome: 'Feira Mooca Moderna', endereco: 'Rua dos Trilhos, nº 869' },
-      { dia: 'Quinta-feira', nome: 'Feira Alto da Mooca', endereco: 'Rua Itanhaém' },
-      { dia: 'Quinta-feira', nome: 'Feira Vila Oratório', endereco: 'Rua Silva Coutinho, S/N' },
-      { dia: 'Quinta-feira', nome: 'Feira Mãe do Céu', endereco: 'Rua Visconde de Itaboraí, nº 233' },
-      { dia: 'Quinta-feira', nome: 'Feira Machado Tolosa', endereco: 'Rua Machado Tolosa' },
-      { dia: 'Sexta-feira', nome: 'Feira Jaibarás', endereco: 'Rua Jaibarás' },
-      { dia: 'Sexta-feira', nome: 'Feira Bom Jesus', endereco: 'Rua Bom Jesus' },
-      { dia: 'Sábado', nome: 'Feira Mooca (Tabajaras)', endereco: 'Rua Tabajaras, entre 227 e 366' },
-      { dia: 'Sábado', nome: 'Feira Serra de Jairé', endereco: 'Rua Serra de Jairé, entre 760 e 908' },
-      { dia: 'Domingo', nome: 'Feira Mooca Moderna (Bresser)', endereco: 'Rua Bresser, nº 2701' },
-    ];
-
-    let linhas = '';
-
-    feiras.forEach(feira => {
-      const isHoje = feira.dia.includes(diaHoje);
-      const classeBolinha = isHoje ? 'bolinha ativa' : 'bolinha inativa';
-      linhas += `
-        <tr>
-          <td><span class="${classeBolinha}"></span> ${feira.dia}</td>
-          <td>${feira.nome}</td>
-          <td>${feira.endereco}</td>
-        </tr>
-      `;
-    });
-
-    // Insere as linhas na tabela
-    document.getElementById('tabela-feiras').innerHTML = linhas;
-
-    // Atualiza o texto "Hoje é ..."
+    const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const hoje = new Date().getDay();
+    const diaHoje = dias[hoje];
     document.getElementById('dia-atual').textContent = diaHoje;
+
+    // Opcional: destacar a linha do dia atual (além da bolinha)
+    const linhas = document.querySelectorAll('#tabela-feiras tr');
+    linhas.forEach(linha => {
+      const diaTd = linha.querySelector('td:first-child');
+      if (diaTd && diaTd.textContent.includes(diaHoje)) {
+        linha.style.backgroundColor = 'rgba(0, 255, 0, 0.15)';
+      }
+    });
   });
 </script>
