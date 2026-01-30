@@ -66,6 +66,7 @@
       box-shadow: 0 0 20px #00ffff;
       max-width: 1200px;
       min-height: 60vh;
+      display: none;
     }
     button {
       display: block;
@@ -277,24 +278,23 @@
     <div class="card" data-modulo="transito"><div class="emoji">🚗</div><h2>Trânsito na Mooca</h2></div>
     <div class="card" data-modulo="radares"><div class="emoji">🚦</div><h2>Radares na Mooca</h2></div>
     <div class="card" data-modulo="noticias"><div class="emoji">📰</div><h2>Notícias & Eventos</h2></div>
-    <div class="card" onclick="redirectToPizzarias()"><div class="emoji">🏪</div><h2>Estabelecimentos<br>Comerciais</h2></div>
+    <div class="card" data-modulo="estabelecimentos"><div class="emoji">🏪</div><h2>Estabelecimentos<br>Comerciais</h2></div>
     <div class="card" data-modulo="wifi"><div class="emoji">📡</div><h2>Wi-Fi Disponíveis</h2></div>
     <div class="card" data-modulo="lazer"><div class="emoji">🌳</div><h2>Lazer</h2></div>
     <div class="card" data-modulo="patrocinadores"><div class="emoji">🤝</div><h2>Nossos Apoiadores</h2></div>
     <div class="card" data-modulo="pedidos-sugestoes"><div class="emoji">📩</div><h2>Pedidos /<br>Sugestões</h2></div>
   </div>
 
-  <div id="conteudo">
-    <p style="text-align:center; color:#00ffff; margin-top:40px; font-size:1.2em;">
-      Bem-vindo ao Mooca Hub!<br>Clique em uma das opções acima para ver o conteúdo.
-    </p>
+  <div id="conteudo" style="display: none;">
+    <!-- Aqui carregam os módulos e sub-módulos via fetch -->
   </div>
 
   <script>
-    function fecharInfo() {
-      const info = document.getElementById('info');
-      info.classList.remove('visible');
-      setTimeout(() => info.style.display = 'none', 500);
+    // Função para fechar módulo e esconder o quadro
+    function fecharModulo() {
+      const conteudo = document.getElementById('conteudo');
+      conteudo.innerHTML = '';
+      conteudo.style.display = 'none';
     }
 
     function getDiaSemana() {
@@ -346,43 +346,107 @@
         });
     }
 
-    // Carregamento dinâmico dos módulos (exceto Estabelecimentos)
-    document.querySelectorAll('.card').forEach(card => {
+    // Função global para inicializar mapas (chamada após carregar módulo)
+    function initMap() {
+      const mapElement = document.getElementById('map');
+      if (!mapElement || mapElement._leaflet_id) return; // Já inicializado ou não existe
+
+      const map = L.map('map').setView([-23.558, -46.595], 14);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      // Pins para Wi-Fi
+      if (mapElement.classList.contains('wifi-pin')) {
+        L.marker([-23.562, -46.592]).addTo(map).bindPopup('Praça Ciro Pontes - Mooca<br>WiFi Livre SP');
+        L.marker([-23.548, -46.588]).addTo(map).bindPopup('Praça General Humberto de Sousa Mello - Belém<br>WiFi Livre SP');
+        L.marker([-23.545, -46.608]).addTo(map).bindPopup('Largo da Concórdia - Brás<br>WiFi Livre SP');
+        L.marker([-23.560, -46.579]).addTo(map).bindPopup('Praça São Luis do Curu - Água Rasa<br>WiFi Livre SP');
+        L.marker([-23.539, -46.610]).addTo(map).bindPopup('Praça Kantuta - Pari<br>WiFi Livre SP');
+        L.marker([-23.540, -46.583]).addTo(map).bindPopup('Praça Silvio Romero - Tatuapé<br>WiFi Livre SP');
+      }
+
+      // Pins para Lazer
+      if (mapElement.classList.contains('lazer-pin')) {
+        L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho');
+        L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)');
+        L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping');
+        L.marker([-23.5735, -46.5888]).addTo(map).bindPopup('Clube Atlético Juventus');
+      }
+
+      console.log('Mapa inicializado com sucesso');
+    }
+
+    // Listener principal para cards com data-modulo
+    document.querySelectorAll('.card[data-modulo]').forEach(card => {
       card.addEventListener('click', async () => {
         const modulo = card.getAttribute('data-modulo');
-        if (!modulo) return; // Ignora o card de Pizzarias que não tem data-modulo
-
         const conteudo = document.getElementById('conteudo');
         conteudo.innerHTML = '<p style="text-align:center; color:#00ffff; font-size:1.2em;">Carregando...</p>';
+        conteudo.style.display = 'block';
 
         try {
-          const url = `Modulos/${modulo}.html`;
-          console.log('Tentando carregar:', url);
+          const url = `${modulo}.html`;
+          console.log('Carregando módulo:', url);
 
           const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error(`Erro ${response.status} - ${response.statusText}`);
-          }
+          if (!response.ok) throw new Error(`Erro ${response.status}`);
 
           const html = await response.text();
           conteudo.innerHTML = html;
 
           if (modulo === 'tempo') fetchWeather();
 
+          // Inicializa mapa se o módulo tiver #map
+          setTimeout(initMap, 300); // Delay maior para garantir DOM atualizado
+
           conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } catch (err) {
           conteudo.innerHTML = `
             <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
-              Erro ao carregar o módulo "${modulo}"<br>
-              Caminho tentado: Modulos/${modulo}.html<br>
-              Detalhe: ${err.message}<br><br>
-              <strong>Dica:</strong> Abra via Live Server (VS Code) ou python -m http.server
+              Erro ao carregar "${modulo}"<br>${err.message}
             </p>
           `;
-          console.error('Erro completo:', err);
         }
       });
+    });
+
+    // Listener para sub-categorias (ex: dentro de estabelecimentos)
+    document.body.addEventListener('click', async function(e) {
+      const subCard = e.target.closest('.estabelecimento-card[data-submodulo]');
+      if (subCard) {
+        e.preventDefault();
+        const submodulo = subCard.getAttribute('data-submodulo');
+        const conteudo = document.getElementById('conteudo');
+
+        conteudo.innerHTML = '<p style="text-align:center; color:#00ffff; font-size:1.2em;">Carregando...</p>';
+        conteudo.style.display = 'block';
+
+        try {
+          const url = `${submodulo}.html`;
+          console.log('Carregando sub-módulo:', url);
+
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`Erro ${response.status}`);
+
+          const html = await response.text();
+          conteudo.innerHTML = html;
+
+          // Inicializa mapa se o sub-módulo tiver #map
+          setTimeout(initMap, 300);
+
+          conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (err) {
+          conteudo.innerHTML = `
+            <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
+              Erro ao carregar ${submodulo}.html<br>${err.message}
+            </p>
+          `;
+        }
+      }
     });
   </script>
 </body>
 </html>
+
