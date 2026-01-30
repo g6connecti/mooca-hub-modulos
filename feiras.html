@@ -13,27 +13,27 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Moraes Barros</td>
         <td>Rua Firmiano Pinto</td>
       </tr>
       <tr>
-        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Parque da Mooca</td>
         <td>Rua Conde de Prates</td>
       </tr>
       <tr>
-        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Décio Abrahão</td>
         <td>Rua Décio Ábramo, nº 412</td>
       </tr>
       <tr>
-        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Pires de Campos</td>
         <td>Rua Pires de Campos</td>
       </tr>
       <tr>
-        <td><span class="bolinha ativa"></span>Terça-feira</td>
+        <td><span class="bolinha"></span>Terça-feira</td>
         <td>Feira Dom Bosco</td>
         <td>Rua Dom Bosco</td>
       </tr>
@@ -101,23 +101,29 @@
   <strong>Hoje é <span id="dia-atual"></span>!</strong>
 </p>
 
-<!-- Botão Fechar -->
 <button class="close-btn" onclick="fecharModulo()">Fechar</button>
 
 <script>
-  // Atualiza o texto "Hoje é ..." automaticamente
   document.addEventListener('DOMContentLoaded', function() {
     const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const hoje = new Date().getDay();
     const diaHoje = dias[hoje];
     document.getElementById('dia-atual').textContent = diaHoje;
 
-    // Opcional: destacar a linha do dia atual (além da bolinha)
-    const linhas = document.querySelectorAll('#tabela-feiras tr');
+    // Normaliza o dia para comparação (remove "-feira" e deixa minúsculo)
+    const diaHojeNormal = diaHoje.toLowerCase().replace('-feira', '');
+
+    const linhas = document.querySelectorAll('tbody tr');
     linhas.forEach(linha => {
-      const diaTd = linha.querySelector('td:first-child');
-      if (diaTd && diaTd.textContent.includes(diaHoje)) {
-        linha.style.backgroundColor = 'rgba(0, 255, 0, 0.15)';
+      const textoDia = linha.cells[0].textContent.trim().toLowerCase();
+      const diaNormal = textoDia.replace('-feira', '');
+
+      const bolinha = linha.querySelector('.bolinha');
+      if (diaNormal === diaHojeNormal) {
+        bolinha.classList.add('ativa');
+        linha.style.backgroundColor = 'rgba(0, 255, 0, 0.15)'; // Destaque opcional na linha toda
+      } else {
+        bolinha.classList.add('inativa');
       }
     });
   });
