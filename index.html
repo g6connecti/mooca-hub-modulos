@@ -85,14 +85,14 @@
       transition: all 0.3s;
       text-align: center;
     }
-    .acougue-btn, .emporio-btn, .padaria-btn, .farm-btn, .farm-comum-btn, .hamburguer-btn, .mercado-btn, .restaurante-btn, .noticias-btn, .lazer-btn {
+    .acougue-btn, .emporio-btn, .padaria-btn, .farm-btn, .farm-comum-btn, .hamburguer-btn, .mercado-btn, .restaurante-btn, .noticias-btn {
       background: #00ffff;
       color: #121212;
       box-shadow: 0 0 8px #00ffff;
     }
     .acougue-btn:hover, .emporio-btn:hover, .padaria-btn:hover,
     .farm-btn:hover, .farm-comum-btn:hover, .hamburguer-btn:hover,
-    .mercado-btn:hover, .restaurante-btn:hover, .noticias-btn:hover, .lazer-btn:hover {
+    .mercado-btn:hover, .restaurante-btn:hover, .noticias-btn:hover {
       background: #00ff00;
       box-shadow: 0 0 15px #00ff00;
       transform: translateY(-2px);
@@ -266,6 +266,34 @@
     .lazer-item p {
       margin: 5px 0;
       font-size: 0.95em;
+    }
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .grid {
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+      .card {
+        padding: 12px;
+        min-height: 120px;
+      }
+      .emoji {
+        font-size: 2.8em;
+      }
+      .card h2 {
+        font-size: 1em;
+      }
+    }
+    @media (max-width: 400px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 15px;
+      }
     }
   </style>
 </head>
@@ -651,122 +679,6 @@
             <button class="restaurante-btn" onclick="window.open('https://restauranteamerica.com.br', '_blank')">America (Mooca Plaza Shopping)<br>Rua Cap. Pacheco e Chaves, 313</button>
           </div>
         `;
-      } else if (tipo === 'wifi') {
-        titulo.textContent = 'Wi-Fi Disponíveis na Mooca e Região';
-        conteudo.innerHTML = `
-          <p>Pontos de Wi-Fi gratuito (WiFi Livre SP e outros). Clique nos pins para detalhes.</p>
-          <div id="map"></div>
-          <p style="margin-top:15px; font-size:0.9em; color:#ff9800;">Fonte: Prefeitura SP. Conecte-se à rede "WiFi Livre SP". Informações sujeitas a alterações.</p>
-          <button class="noticias-btn" onclick="window.open('https://prefeitura.sp.gov.br/web/inovacao/w/inclusao_digital/152219', '_blank')">Mapa Completo WiFi Livre SP</button>
-        `;
-        setTimeout(() => {
-          var map = L.map('map').setView([-23.558, -46.595], 14);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          }).addTo(map);
-
-          // Pins com coordenadas aproximadas
-          L.marker([-23.562, -46.592]).addTo(map).bindPopup('Praça Ciro Pontes - Mooca<br>WiFi Livre SP');
-          L.marker([-23.548, -46.588]).addTo(map).bindPopup('Praça General Humberto de Sousa Mello - Belém<br>WiFi Livre SP');
-          L.marker([-23.545, -46.608]).addTo(map).bindPopup('Largo da Concórdia - Brás<br>WiFi Livre SP');
-          L.marker([-23.560, -46.579]).addTo(map).bindPopup('Praça São Luis do Curu - Água Rasa<br>WiFi Livre SP');
-          L.marker([-23.539, -46.610]).addTo(map).bindPopup('Praça Kantuta - Pari<br>WiFi Livre SP');
-          L.marker([-23.540, -46.583]).addTo(map).bindPopup('Praça Silvio Romero - Tatuapé<br>WiFi Livre SP');
-        }, 100);
-      } else if (tipo === 'lazer') {
-        titulo.textContent = 'Lazer na Mooca e Região';
-        conteudo.innerHTML = `
-          <p>Principais opções de lazer, parques, shoppings, teatros e clubes no bairro e arredores.</p>
-          <div id="map"></div>
-          <div class="lista-estabelecimentos">
-            <p class="section-separator">Centros Culturais e Esportivos</p>
-            <div class="lazer-item">
-              <h3>SESC Belenzinho</h3>
-              <p>O SESC Belenzinho é um dos principais centros de lazer da região, oferecendo uma vasta gama de atividades culturais, esportivas e de bem-estar, incluindo piscinas, teatro, shows, exposições e cursos.</p>
-              <p><strong>Endereço:</strong> Rua Padre Adelino, 1.000 - Belenzinho, São Paulo - SP, 03303-000.</p>
-              <button class="lazer-btn" onclick="window.open('https://www.sesc.com.br/unidade/sesc-belenzinho/', '_blank')">Site Oficial</button>
-            </div>
-
-            <p class="section-separator">Parques e Áreas Verdes</p>
-            <div class="lazer-item">
-              <h3>Parque da Mooca (CEE Salim Farah Maluf)</h3>
-              <p>Um grande espaço para a prática de esportes e lazer, conhecido localmente como "Distrital", que oferece atividades gratuitas e áreas de convivência.</p>
-              <p><strong>Endereço:</strong> Rua Taquari, 573 - Mooca, São Paulo - SP.</p>
-              <p>Informações no portal da Prefeitura de SP.</p>
-            </div>
-            <div class="lazer-item">
-              <h3>Parque Sabesp Mooca Radialista Fiori Gigliotti</h3>
-              <p>Uma opção de lazer com áreas verdes para caminhada e momentos de relaxamento.</p>
-              <p><strong>Endereço:</strong> Avenida Paes de Barros, 2107 - Alto da Mooca, São Paulo - SP.</p>
-              <p>Informações em guias locais.</p>
-            </div>
-
-            <p class="section-separator">Shoppings Centers</p>
-            <div class="lazer-item">
-              <h3>Mooca Plaza Shopping</h3>
-              <p>Um shopping center completo com diversas lojas, praça de alimentação, cinemas e serviços, sendo um ponto de encontro popular na região.</p>
-              <p><strong>Endereço:</strong> Rua Capitão Pacheco e Chaves, 313 - Vila Prudente, São Paulo - SP, 03126-000.</p>
-              <button class="lazer-btn" onclick="window.open('https://www.moocaplaza.com.br/', '_blank')">Site Oficial</button>
-            </div>
-
-            <p class="section-separator">Teatros e Espaços Culturais</p>
-            <div class="lazer-item">
-              <h3>Museu da Imigração do Estado de São Paulo</h3>
-              <p>Embora não seja um teatro, é um importante ponto cultural na região do Belenzinho/Mooca, ideal para quem gosta de história e arquitetura.</p>
-              <p><strong>Endereço:</strong> Rua Visconde de Parnaíba, 1316 - Mooca, São Paulo - SP.</p>
-              <button class="lazer-btn" onclick="window.open('https://museudaimigracao.org.br/', '_blank')">Site Oficial</button>
-            </div>
-            <div class="lazer-item">
-              <h3>Lilith Comedy Club</h3>
-              <p>Um espaço dedicado a apresentações de stand-up comedy, próximo ao Shopping Mooca.</p>
-              <p><strong>Endereço:</strong> Rua Capitão Pacheco e Chaves, 981 - Vila Prudente, São Paulo - SP, 03126-001.</p>
-            </div>
-
-            <p class="section-separator">Clubes</p>
-            <div class="lazer-item">
-              <h3>Clube Atlético Juventus</h3>
-              <p>Um clube tradicional com uma vasta gama de atividades esportivas e sociais, incluindo natação, academia e eventos sociais.</p>
-              <p><strong>Endereço:</strong> Rua Comendador Roberto Ugolini, 20 - Parque da Mooca, São Paulo - SP, 03125-010.</p>
-              <button class="lazer-btn" onclick="window.open('https://www.juventus.com.br/', '_blank')">Site Oficial</button>
-            </div>
-            <div class="lazer-item">
-              <h3>Clube Escola da Mooca (CEE Salim Farah Maluf)</h3>
-              <p>Oferece atividades esportivas e de lazer gratuitas, com instalações que incluem piscinas e quadras, sendo um espaço público de convivência para a comunidade.</p>
-              <p><strong>Endereço:</strong> Rua Taquari, 635 - Mooca, São Paulo - SP, 03166-000.</p>
-              <p>Informações no portal da Prefeitura de São Paulo.</p>
-            </div>
-            <div class="lazer-item">
-              <h3>Clube Atlético Parque da Mooca</h3>
-              <p>Um clube social e esportivo com uma longa história, oferecendo espaços para a prática de esportes, como quadras de futebol.</p>
-              <p><strong>Endereço:</strong> Rua Padre Raposo, 837 - Alto da Mooca, São Paulo - SP, 03118-001.</p>
-              <button class="lazer-btn" onclick="window.open('https://www.jogaojogo.com.br/quadra/c-a-parque-da-mooca', '_blank')">Mais Informações</button>
-            </div>
-            <div class="lazer-item">
-              <h3>Leão do Norte Futebol Clube</h3>
-              <p>Clube com tradição desde 1935, conhecido por suas atividades esportivas amadoras e espaços para eventos.</p>
-              <p><strong>Endereço:</strong> Rua Passarola, 85 - Quarta Parada (próximo à Mooca), São Paulo - SP, 03178-210.</p>
-              <p>Páginas em redes sociais como @leaodonorte.fc no Instagram.</p>
-            </div>
-          </div>
-          <p style="margin-top:15px; font-size:0.9em; color:#ff9800; text-align:center;">Clique nos pins do mapa para ver cada local. Informações sujeitas a alteração — confirme horários e disponibilidade.</p>
-        `;
-        setTimeout(() => {
-          var map = L.map('map').setView([-23.558, -46.595], 14);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          }).addTo(map);
-
-          L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho');
-          L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)');
-          L.marker([-23.5580, -46.5950]).addTo(map).bindPopup('Parque Sabesp Mooca Radialista Fiori Gigliotti');
-          L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping');
-          L.marker([-23.5492, -46.6128]).addTo(map).bindPopup('Museu da Imigração do Estado de São Paulo');
-          L.marker([-23.5705, -46.6025]).addTo(map).bindPopup('Lilith Comedy Club');
-          L.marker([-23.5735, -46.5888]).addTo(map).bindPopup('Clube Atlético Juventus');
-          L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Clube Escola da Mooca (CEE Salim Farah Maluf)');
-          L.marker([-23.5650, -46.5900]).addTo(map).bindPopup('Clube Atlético Parque da Mooca');
-          L.marker([-23.5750, -46.5800]).addTo(map).bindPopup('Leão do Norte Futebol Clube');
-        }, 100);
       } else if (tipo === 'patrocinadores') {
         titulo.textContent = 'Nossos Apoiadores';
         conteudo.innerHTML = `
