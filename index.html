@@ -206,19 +206,20 @@
     }
     .bolinha {
       display: inline-block;
-      width: 10px;
-      height: 10px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      margin-left: 8px;
+      margin-right: 12px;
       vertical-align: middle;
     }
     .bolinha.ativa {
       background: #00ff00;
-      box-shadow: 0 0 8px #00ff00;
-      animation: piscar 1.5s infinite;
+      box-shadow: 0 0 12px #00ff00, 0 0 20px rgba(0, 255, 0, 0.7);
+      animation: piscar 1.2s infinite;
     }
     .bolinha.inativa {
       background: #ff4444;
+      box-shadow: 0 0 6px #ff4444;
     }
     @keyframes piscar {
       0% { opacity: 1; }
@@ -290,7 +291,6 @@
   </div>
 
   <script>
-    // Função para fechar módulo e esconder o quadro
     function fecharModulo() {
       const conteudo = document.getElementById('conteudo');
       conteudo.innerHTML = '';
@@ -346,9 +346,7 @@
         });
     }
 
-    // Função global para inicializar mapas (Wi-Fi OU Lazer)
     function initMap() {
-      // Mapa Wi-Fi (#map)
       const wifiMapEl = document.getElementById('map');
       if (wifiMapEl && !wifiMapEl._leaflet_id) {
         const map = L.map('map').setView([-23.558, -46.595], 14);
@@ -366,7 +364,6 @@
         console.log('Mapa Wi-Fi inicializado');
       }
 
-      // Mapa Lazer (#lazer-map)
       const lazerMapEl = document.getElementById('lazer-map');
       if (lazerMapEl && !lazerMapEl._leaflet_id) {
         const map = L.map('lazer-map').setView([-23.558, -46.595], 14);
@@ -396,7 +393,6 @@
       }
     }
 
-    // Listener principal para cards com data-modulo
     document.querySelectorAll('.card[data-modulo]').forEach(card => {
       card.addEventListener('click', async () => {
         const modulo = card.getAttribute('data-modulo');
@@ -414,7 +410,7 @@
           const html = await response.text();
           conteudo.innerHTML = html;
 
-          // Lógica especial para o módulo feiras (bolinhas dinâmicas)
+          // Lógica dinâmica das feiras
           if (modulo === 'feiras') {
             const diaHoje = getDiaSemana();
 
@@ -469,7 +465,6 @@
       });
     });
 
-    // Listener para sub-categorias (ex: dentro de estabelecimentos)
     document.body.addEventListener('click', async function(e) {
       const subCard = e.target.closest('.estabelecimento-card[data-submodulo]');
       if (subCard) {
