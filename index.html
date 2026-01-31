@@ -396,31 +396,33 @@
     document.querySelectorAll('.card[data-modulo]').forEach(card => {
       card.addEventListener('click', async () => {
         const modulo = card.getAttribute('data-modulo');
+        console.log('Card clicado:', modulo);
+
         const conteudo = document.getElementById('conteudo');
         conteudo.innerHTML = '<p style="text-align:center; color:#00ffff; font-size:1.2em;">Carregando...</p>';
         conteudo.style.display = 'block';
 
         try {
           const url = `${modulo}.html`;
-          console.log('Iniciando fetch para módulo:', url);
+          console.log('Iniciando fetch para:', url);
 
           const response = await fetch(url);
-          console.log('Resposta do fetch:', response.status, response.ok);
+          console.log('Fetch concluído. Status:', response.status);
 
           if (!response.ok) throw new Error(`Erro HTTP ${response.status}`);
 
           const html = await response.text();
-          console.log('HTML carregado, tamanho:', html.length);
+          console.log('HTML recebido. Tamanho:', html.length);
 
           conteudo.innerHTML = html;
           console.log('HTML inserido no #conteudo');
 
-          // BLOCO DAS FEIRAS - deve rodar aqui
+          // BLOCO DAS FEIRAS - deve aparecer no console quando clicar em Feiras
           if (modulo === 'feiras') {
-            console.log('Entrou no bloco de feiras!');
+            console.log('=== BLOCO FEIRAS EXECUTANDO ===');
 
             const diaHoje = getDiaSemana();
-            console.log('Dia atual detectado:', diaHoje);
+            console.log('Dia atual:', diaHoje);
 
             const feiras = [
               { dia: 'Terça-feira', nome: 'Feira Moraes Barros', endereco: 'Rua Firmiano Pinto' },
@@ -454,18 +456,20 @@
             const tabelaDiv = document.getElementById('feiras-tabela');
             if (tabelaDiv) {
               tabelaDiv.innerHTML = tabelaHTML;
-              console.log('Tabela de feiras inserida com sucesso');
+              console.log('Tabela inserida com sucesso');
             } else {
-              console.error('ERRO: #feiras-tabela não encontrado no DOM');
+              console.error('ERRO: #feiras-tabela não encontrado');
             }
 
             const diaAtualEl = document.getElementById('dia-atual');
             if (diaAtualEl) {
               diaAtualEl.textContent = diaHoje;
-              console.log('Texto do dia atualizado para:', diaHoje);
+              console.log('Dia atual atualizado para:', diaHoje);
             } else {
-              console.error('ERRO: #dia-atual não encontrado no DOM');
+              console.error('ERRO: #dia-atual não encontrado');
             }
+          } else {
+            console.log('Não é o módulo feiras, pulando bloco');
           }
 
           if (modulo === 'tempo') fetchWeather();
@@ -474,7 +478,7 @@
 
           conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } catch (err) {
-          console.error('Erro no carregamento do módulo:', err);
+          console.error('Erro geral no carregamento:', err);
           conteudo.innerHTML = `
             <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
               Erro ao carregar "${modulo}"<br>${err.message}
