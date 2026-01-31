@@ -287,11 +287,10 @@
   </div>
 
   <div id="conteudo" style="display: none;">
-    <!-- Aqui carregam os módulos e sub-módulos via fetch -->
+    <!-- Aqui carregam os módulos -->
   </div>
 
   <script>
-    // Função para fechar módulo e esconder o quadro
     function fecharModulo() {
       const conteudo = document.getElementById('conteudo');
       conteudo.innerHTML = '';
@@ -347,7 +346,6 @@
         });
     }
 
-    // Função global para inicializar mapas (Wi-Fi OU Lazer)
     function initMap() {
       const wifiMapEl = document.getElementById('map');
       if (wifiMapEl && !wifiMapEl._leaflet_id) {
@@ -404,19 +402,25 @@
 
         try {
           const url = `${modulo}.html`;
-          console.log('Carregando módulo:', url);
+          console.log('Iniciando fetch para módulo:', url);
 
           const response = await fetch(url);
-          if (!response.ok) throw new Error(`Erro ${response.status}`);
+          console.log('Resposta do fetch:', response.status, response.ok);
+
+          if (!response.ok) throw new Error(`Erro HTTP ${response.status}`);
 
           const html = await response.text();
-          conteudo.innerHTML = html;
+          console.log('HTML carregado, tamanho:', html.length);
 
-          // BLOCO ESPECIAL PARA FEIRAS - gera tabela com bolinhas dinâmicas
+          conteudo.innerHTML = html;
+          console.log('HTML inserido no #conteudo');
+
+          // BLOCO DAS FEIRAS - deve rodar aqui
           if (modulo === 'feiras') {
-            console.log('Entrou no bloco de feiras! Dia atual:', getDiaSemana());
+            console.log('Entrou no bloco de feiras!');
 
             const diaHoje = getDiaSemana();
+            console.log('Dia atual detectado:', diaHoje);
 
             const feiras = [
               { dia: 'Terça-feira', nome: 'Feira Moraes Barros', endereco: 'Rua Firmiano Pinto' },
@@ -450,17 +454,17 @@
             const tabelaDiv = document.getElementById('feiras-tabela');
             if (tabelaDiv) {
               tabelaDiv.innerHTML = tabelaHTML;
-              console.log('Tabela de feiras gerada com sucesso');
+              console.log('Tabela de feiras inserida com sucesso');
             } else {
-              console.error('Div #feiras-tabela não encontrada');
+              console.error('ERRO: #feiras-tabela não encontrado no DOM');
             }
 
             const diaAtualEl = document.getElementById('dia-atual');
             if (diaAtualEl) {
               diaAtualEl.textContent = diaHoje;
-              console.log('Dia atual atualizado:', diaHoje);
+              console.log('Texto do dia atualizado para:', diaHoje);
             } else {
-              console.error('Span #dia-atual não encontrado');
+              console.error('ERRO: #dia-atual não encontrado no DOM');
             }
           }
 
@@ -470,17 +474,16 @@
 
           conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } catch (err) {
+          console.error('Erro no carregamento do módulo:', err);
           conteudo.innerHTML = `
             <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
               Erro ao carregar "${modulo}"<br>${err.message}
             </p>
           `;
-          console.error('Erro geral no fetch:', err);
         }
       });
     });
 
-    // Listener para sub-categorias
     document.body.addEventListener('click', async function(e) {
       const subCard = e.target.closest('.estabelecimento-card[data-submodulo]');
       if (subCard) {
@@ -505,12 +508,12 @@
 
           conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } catch (err) {
+          console.error('Erro no sub-módulo:', err);
           conteudo.innerHTML = `
             <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
               Erro ao carregar ${submodulo}.html<br>${err.message}
             </p>
           `;
-          console.error(err);
         }
       }
     });
