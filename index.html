@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mooca Hub - Tudo do Bairro na Palma da Mão</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #121212, #1e1e1e);
+      margin: 0;
+      padding: 20px;
+      color: #f0f0f0;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    h1 {
+      color: #FF5722;
+      font-size: 2.5em;
+      text-shadow: 0 0 10px #FF5722, 0 0 20px rgba(255, 87, 34, 0.6);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto 40px auto;
+    }
+    .card {
+      background: #2a2a2a;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.3);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #00ffff, 0 0 50px rgba(0, 255, 255, 0.7);
+    }
+    .card h2 {
+      margin: 10px 0 0;
+      font-size: 1.2em;
+      color: #00ff00;
+      text-shadow: 0 0 5px #00ff00;
+    }
+    .emoji {
+      font-size: 3.5em;
+      margin-bottom: 10px;
+    }
+    #conteudo {
+      margin: 20px auto;
+      padding: 20px;
+      background: #2a2a2a;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00ffff;
+      max-width: 1200px;
+      min-height: 60vh;
+      display: none;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95em;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    .acougue-btn, .emporio-btn, .padaria-btn, .farm-btn, .farm-comum-btn, .hamburguer-btn, .mercado-btn, .restaurante-btn, .noticias-btn, .lazer-btn {
+      background: #00ffff;
+      color: #121212;
+      box-shadow: 0 0 8px #00ffff;
+    }
+    .acougue-btn:hover, .emporio-btn:hover, .padaria-btn:hover,
+    .farm-btn:hover, .farm-comum-btn:hover, .hamburguer-btn:hover,
+    .mercado-btn:hover, .restaurante-btn:hover, .noticias-btn:hover, .lazer-btn:hover {
+      background: #00ff00;
+      box-shadow: 0 0 15px #00ff00;
+      transform: translateY(-2px);
+    }
+    .farm-manip-btn {
+      background: #9b59b6;
+      color: white;
+      box-shadow: 0 0 8px #9b59b6;
+    }
+    .pronto-btn {
+      background: #ff5722;
+      color: white;
+      box-shadow: 0 0 8px #ff5722;
+    }
+    .close-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #00ffff;
+      color: #121212;
+      box-shadow: 0 0 10px #00ffff;
+      font-size: 1em;
+    }
+    .close-btn:hover {
+      background: #00ff00;
+      box-shadow: 0 0 20px #00ff00;
+    }
+    .sugestao-email {
+      color: #81d4fa;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .sugestao-email:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    iframe.map-embed {
+      width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .weather-box {
+      background: rgba(0,0,0,0.4);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      margin: 15px 0;
+    }
+    .temp {
+      font-size: 2.2em;
+      font-weight: bold;
+    }
+    .cold { color: #81d4fa; }
+    .mild { color: #FF9800; }
+    .hot { color: #f44336; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    table th, table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #444;
+    }
+    table th {
+      background: #333;
+      color: #00ff00;
+    }
+    table tr:hover {
+      background: #333;
+    }
+    .overflow-x {
+      overflow-x: auto;
+    }
+    .lista-estabelecimentos {
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    .lista-estabelecimentos::-webkit-scrollbar {
+      width: 8px;
+    }
+    .lista-estabelecimentos::-webkit-scrollbar-thumb {
+      background: #00ffff;
+      border-radius: 4px;
+    }
+    .estabelecimentos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      padding: 10px;
+    }
+    .estabelecimento-card {
+      background: #2a2a2a;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #00ffff;
+      transition: all 0.3s;
+    }
+    .estabelecimento-card:hover {
+      background: #00ffff22;
+      transform: translateY(-4px);
+      box-shadow: 0 0 15px #00ffff;
+    }
+    .section-separator {
+      font-size: 1.2em;
+      color: #00ffff;
+      margin: 30px 0 15px;
+      text-align: center;
+      border-bottom: 1px solid #444;
+      padding-bottom: 10px;
+    }
+    .bolinha {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .bolinha.ativa {
+      background: #00ff00;
+      box-shadow: 0 0 8px #00ff00;
+      animation: piscar 1.5s infinite;
+    }
+    .bolinha.inativa {
+      background: #ff4444;
+    }
+    @keyframes piscar {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+    .apoio-lista {
+      list-style-type: disc;
+      padding-left: 30px;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    .apoio-lista li {
+      margin-bottom: 10px;
+    }
+    .apoio-link {
+      color: #00ffff;
+      text-decoration: none;
+    }
+    .apoio-link:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    #map, #lazer-map {
+      height: 400px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .lazer-item {
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      border: 1px solid #00ffff;
+    }
+    .lazer-item h3 {
+      color: #00ff00;
+      margin: 0 0 8px;
+    }
+    .lazer-item p {
+      margin: 5px 0;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Mooca Hub - Tudo do Bairro na Palma da Mão</h1>
+    <p>Informações rápidas e úteis do bairro da Mooca - SP</p>
+  </header>
+
+  <div class="grid">
+    <div class="card" data-modulo="seguranca"><div class="emoji">🚨</div><h2>Segurança</h2></div>
+    <div class="card" data-modulo="prontoatendimento"><div class="emoji">🏥</div><h2>Pronto Atendimento</h2></div>
+    <div class="card" data-modulo="tempo"><div class="emoji">☀️</div><h2>Previsão do Tempo</h2></div>
+    <div class="card" data-modulo="transito"><div class="emoji">🚗</div><h2>Trânsito na Mooca</h2></div>
+    <div class="card" data-modulo="radares"><div class="emoji">🚦</div><h2>Radares na Mooca</h2></div>
+    <div class="card" data-modulo="noticias"><div class="emoji">📰</div><h2>Notícias & Eventos</h2></div>
+    <div class="card" data-modulo="estabelecimentos"><div class="emoji">🏪</div><h2>Estabelecimentos<br>Comerciais</h2></div>
+    <div class="card" data-modulo="wifi"><div class="emoji">📡</div><h2>Wi-Fi Disponíveis</h2></div>
+    <div class="card" data-modulo="lazer"><div class="emoji">🌳</div><h2>Lazer</h2></div>
+    <div class="card" data-modulo="patrocinadores"><div class="emoji">🤝</div><h2>Nossos Apoiadores</h2></div>
+    <div class="card" data-modulo="pedidos-sugestoes"><div class="emoji">📩</div><h2>Pedidos /<br>Sugestões</h2></div>
+  </div>
+
+  <div id="conteudo" style="display: none;">
+    <!-- Aqui carregam os módulos e sub-módulos via fetch -->
+  </div>
+
+  <script>
+    // Função para fechar módulo e esconder o quadro
+    function fecharModulo() {
+      const conteudo = document.getElementById('conteudo');
+      conteudo.innerHTML = '';
+      conteudo.style.display = 'none';
+    }
+
+    function getDiaSemana() {
+      const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      const hoje = new Date().getDay();
+      return dias[hoje];
+    }
+
+    function redirectToPizzarias() {
+      window.open('https://pizzaria-finder-copy-e01ee74b.base44.app/', '_blank');
+    }
+
+    function fetchWeather() {
+      const apiKey = '0a8a8b06e367a630a3079ba38c71b310';
+      const lat = -23.558;
+      const lon = -46.595;
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt_br`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.main) {
+            const temp = data.main.temp.toFixed(1);
+            const desc = data.weather[0].description;
+            const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+            let tempClass = 'mild';
+            if (parseFloat(temp) < 20) tempClass = 'cold';
+            if (parseFloat(temp) > 28) tempClass = 'hot';
+
+            const weatherEl = document.getElementById('weather-info');
+            if (weatherEl) {
+              weatherEl.innerHTML = `
+                <img src="${icon}" alt="${desc}" style="vertical-align:middle; width:60px;">
+                <span class="temp ${tempClass}">${temp}°C</span>
+                <span class="desc"> - ${desc.charAt(0).toUpperCase() + desc.slice(1)}</span>
+                <br>
+                <small>Umidade: ${data.main.humidity}% | Vento: ${data.wind.speed} m/s</small>
+              `;
+            }
+          } else {
+            const weatherEl = document.getElementById('weather-info');
+            if (weatherEl) weatherEl.innerHTML = 'Dados não disponíveis.';
+          }
+        })
+        .catch(() => {
+          const weatherEl = document.getElementById('weather-info');
+          if (weatherEl) weatherEl.innerHTML = 'Erro ao carregar. Verifique conexão ou chave API.';
+        });
+    }
+
+    // Função global para inicializar mapas (Wi-Fi OU Lazer)
+    function initMap() {
+      // Mapa Wi-Fi (#map)
+      const wifiMapEl = document.getElementById('map');
+      if (wifiMapEl && !wifiMapEl._leaflet_id) {
+        const map = L.map('map').setView([-23.558, -46.595], 14);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Pins Wi-Fi
+        L.marker([-23.562, -46.592]).addTo(map).bindPopup('Praça Ciro Pontes - Mooca<br>WiFi Livre SP');
+        L.marker([-23.548, -46.588]).addTo(map).bindPopup('Praça General Humberto de Sousa Mello - Belém<br>WiFi Livre SP');
+        L.marker([-23.545, -46.608]).addTo(map).bindPopup('Largo da Concórdia - Brás<br>WiFi Livre SP');
+        L.marker([-23.560, -46.579]).addTo(map).bindPopup('Praça São Luis do Curu - Água Rasa<br>WiFi Livre SP');
+        L.marker([-23.539, -46.610]).addTo(map).bindPopup('Praça Kantuta - Pari<br>WiFi Livre SP');
+        L.marker([-23.540, -46.583]).addTo(map).bindPopup('Praça Silvio Romero - Tatuapé<br>WiFi Livre SP');
+
+        console.log('Mapa Wi-Fi inicializado com sucesso');
+      }
+
+      // Mapa Lazer (#lazer-map)
+      const lazerMapEl = document.getElementById('lazer-map');
+      if (lazerMapEl && !lazerMapEl._leaflet_id) {
+        const map = L.map('lazer-map').setView([-23.558, -46.595], 14);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Pins do Lazer
+        L.marker([-23.5405, -46.5890]).addTo(map).bindPopup('SESC Belenzinho<br>Rua Padre Adelino, 1.000');
+        L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Parque da Mooca (CEE Salim Farah Maluf)<br>Rua Taquari, 573');
+        L.marker([-23.5585, -46.5900]).addTo(map).bindPopup('Parque Sabesp Mooca<br>Av. Paes de Barros, 2107');
+        L.marker([-23.5700, -46.6020]).addTo(map).bindPopup('Mooca Plaza Shopping<br>Rua Capitão Pacheco e Chaves, 313');
+        L.marker([-23.5450, -46.5950]).addTo(map).bindPopup('Museu da Imigração<br>Rua Visconde de Parnaíba, 1316');
+        L.marker([-23.5680, -46.6000]).addTo(map).bindPopup('Lilith Comedy Club<br>Rua Capitão Pacheco e Chaves, 981');
+        L.marker([-23.5625, -46.5925]).addTo(map).bindPopup('Clube Atlético Juventus<br>Rua Comendador Roberto Ugolini, 20');
+        L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Clube Escola da Mooca<br>Rua Taquari, 635');
+        L.marker([-23.5550, -46.5850]).addTo(map).bindPopup('Clube Atlético Parque da Mooca<br>Rua Padre Raposo, 837');
+        L.marker([-23.5750, -46.6050]).addTo(map).bindPopup('Leão do Norte Futebol Clube<br>Rua Passarola, 85');
+
+        // Pins 3ª idade
+        L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('CDI Mooca<br>Rua dos Campineiros, 513');
+        L.marker([-23.5500, -46.5900]).addTo(map).bindPopup('Yoga Mooca<br>Rua Rivadávia Correia, 84');
+        L.marker([-23.5600, -46.5950]).addTo(map).bindPopup('Residencial Bella Mooca<br>Rua João Antônio de Oliveira, 915');
+        L.marker([-23.5580, -46.5930]).addTo(map).bindPopup('Terça da Serra Mooca<br>Rua Dom Joaquim de Melo, 319');
+        L.marker([-23.5620, -46.5920]).addTo(map).bindPopup('Universidade São Judas Tadeu Mooca<br>Rua Taquari, 546');
+        L.marker([-23.5630, -46.5940]).addTo(map).bindPopup('Anhembi Morumbi Campus Mooca<br>Rua Dr. Almeida Lima, 1134');
+
+        console.log('Mapa LAZER inicializado com sucesso + todos os pins');
+      }
+    }
+
+    // Listener principal para cards com data-modulo
+    document.querySelectorAll('.card[data-modulo]').forEach(card => {
+      card.addEventListener('click', async () => {
+        const modulo = card.getAttribute('data-modulo');
+        const conteudo = document.getElementById('conteudo');
+        conteudo.innerHTML = '<p style="text-align:center; color:#00ffff; font-size:1.2em;">Carregando...</p>';
+        conteudo.style.display = 'block';
+
+        try {
+          const url = `${modulo}.html`;
+          console.log('Carregando módulo:', url);
+
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`Erro ${response.status}`);
+
+          const html = await response.text();
+          conteudo.innerHTML = html;
+
+          if (modulo === 'tempo') fetchWeather();
+
+          // Inicializa mapa (suporta Wi-Fi e Lazer)
+          setTimeout(initMap, 600);
+
+          conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (err) {
+          conteudo.innerHTML = `
+            <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
+              Erro ao carregar "${modulo}"<br>${err.message}
+            </p>
+          `;
+          console.error(err);
+        }
+      });
+    });
+
+    // Listener para sub-categorias (ex: dentro de estabelecimentos)
+    document.body.addEventListener('click', async function(e) {
+      const subCard = e.target.closest('.estabelecimento-card[data-submodulo]');
+      if (subCard) {
+        e.preventDefault();
+        const submodulo = subCard.getAttribute('data-submodulo');
+        const conteudo = document.getElementById('conteudo');
+
+        conteudo.innerHTML = '<p style="text-align:center; color:#00ffff; font-size:1.2em;">Carregando...</p>';
+        conteudo.style.display = 'block';
+
+        try {
+          const url = `${submodulo}.html`;
+          console.log('Carregando sub-módulo:', url);
+
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`Erro ${response.status}`);
+
+          const html = await response.text();
+          conteudo.innerHTML = html;
+
+          setTimeout(initMap, 600);
+
+          conteudo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (err) {
+          conteudo.innerHTML = `
+            <p style="color:#ff4444; text-align:center; font-size:1.2em; padding:20px;">
+              Erro ao carregar ${submodulo}.html<br>${err.message}
+            </p>
+          `;
+          console.error(err);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
