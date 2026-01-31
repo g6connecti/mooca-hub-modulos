@@ -291,6 +291,7 @@
   </div>
 
   <script>
+    // Função para fechar módulo e esconder o quadro
     function fecharModulo() {
       const conteudo = document.getElementById('conteudo');
       conteudo.innerHTML = '';
@@ -346,6 +347,7 @@
         });
     }
 
+    // Função global para inicializar mapas (Wi-Fi OU Lazer)
     function initMap() {
       const wifiMapEl = document.getElementById('map');
       if (wifiMapEl && !wifiMapEl._leaflet_id) {
@@ -410,8 +412,10 @@
           const html = await response.text();
           conteudo.innerHTML = html;
 
-          // Lógica dinâmica das feiras
+          // BLOCO ESPECIAL PARA FEIRAS - gera tabela com bolinhas dinâmicas
           if (modulo === 'feiras') {
+            console.log('Entrou no bloco de feiras! Dia atual:', getDiaSemana());
+
             const diaHoje = getDiaSemana();
 
             const feiras = [
@@ -443,10 +447,21 @@
 
             tabelaHTML += '</tbody></table>';
 
-            document.getElementById('feiras-tabela').innerHTML = tabelaHTML;
+            const tabelaDiv = document.getElementById('feiras-tabela');
+            if (tabelaDiv) {
+              tabelaDiv.innerHTML = tabelaHTML;
+              console.log('Tabela de feiras gerada com sucesso');
+            } else {
+              console.error('Div #feiras-tabela não encontrada');
+            }
 
             const diaAtualEl = document.getElementById('dia-atual');
-            if (diaAtualEl) diaAtualEl.textContent = diaHoje;
+            if (diaAtualEl) {
+              diaAtualEl.textContent = diaHoje;
+              console.log('Dia atual atualizado:', diaHoje);
+            } else {
+              console.error('Span #dia-atual não encontrado');
+            }
           }
 
           if (modulo === 'tempo') fetchWeather();
@@ -460,11 +475,12 @@
               Erro ao carregar "${modulo}"<br>${err.message}
             </p>
           `;
-          console.error(err);
+          console.error('Erro geral no fetch:', err);
         }
       });
     });
 
+    // Listener para sub-categorias
     document.body.addEventListener('click', async function(e) {
       const subCard = e.target.closest('.estabelecimento-card[data-submodulo]');
       if (subCard) {
